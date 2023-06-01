@@ -1,0 +1,6 @@
+ERROR: 2023/05/26 08:11:32 D:/gitlab/e-capture/indra/api-indra-admin/api/handler/upload_metadata/handler.go:26: couldn't bind model RequestMetadata: Unprocessable Entity
+ERROR: 2023/05/26 08:11:32 D:/gitlab/e-capture/indra/api-indra-admin/api/handler/upload_metadata/handler.go:26: couldn't bind model RequestMetadata: invalid character 'm' looking for beginning of object key string
+ERROR: 2023/05/26 08:12:14 D:/gitlab/e-capture/indra/api-indra-admin/api/handler/upload_metadata/handler.go:26: couldn't bind model RequestMetadata: invalid character 'm' looking for beginning of object key string
+ERROR: 2023/05/26 08:12:37 D:/gitlab/e-capture/indra/api-indra-admin/api/handler/upload_metadata/handler.go:26: couldn't bind model RequestMetadata: invalid character 'm' looking for beginning of object key string
+ERROR: 2023/05/26 08:13:55 D:/gitlab/e-capture/indra/api-indra-admin/api/handler/upload_metadata/handler.go:26: couldn't bind model RequestMetadata: invalid character 'm' looking for beginning of object key string
+ERROR: 2023/05/26 08:28:35 D:/gitlab/e-capture/indra/api-indra-admin/api/handler/upload_metadata/handler.go:41: Couldn't insert suffragers: sql: converting argument $1 type: unsupported type [][]interface {}, a slice of slice

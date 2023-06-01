@@ -1,0 +1,55 @@
+{
+  "app":{
+    "service_name": "Api-Indra-Admin",
+    "port": 1051,
+    "allowed_domains": "*",
+    "path_log": "./log",
+    "log_review_interval":60,
+    "register_log": true,
+    "rsa_private_key": "../rsa/app.rsa",
+    "rsa_public_key": "../rsa/app.rsa.pub",
+    "logger_http": true,
+    "is_cipher": false,
+    "validate_ip": "false"
+  },
+  "db___": {
+    "engine": "postgres",
+    "server": "ecapture-db-cluster-instance-1-us-east-1c.cz34n4bxn4bs.us-east-1.rds.amazonaws.com",
+    "port": 5432,
+    "name": "alnap_test_dev_new",
+    "user": "alnaptest",
+    "password": "alnaptest2020*",
+    "instance": "",
+    "is_secure": false
+  },
+  "db_": {
+    "engine": "postgres",
+    "server": "10.0.0.5",
+    "port": 5432,
+    "name": "qa-comfandi",
+    "user": "desarrollo",
+    "password": "desarrollo2022.*",
+    "instance": "",
+    "is_secure": false
+  },
+  "db_qa_indra": {
+    "engine": "postgres",
+    "server": "34.238.213.186",
+    "port": 5432,
+    "name": "qa-indra",
+    "user": "alnaptest",
+    "password": "alnaptest2020*",
+    "instance": "",
+    "is_secure": false
+  },
+  "db": {
+    "engine": "postgres",
+    "server": "localhost",
+    "port": 5432,
+    "name": "qa-indra",
+    "user": "postgres",
+    "password": "admin",
+    "instance": "",
+    "is_secure": false
+  }
+}
