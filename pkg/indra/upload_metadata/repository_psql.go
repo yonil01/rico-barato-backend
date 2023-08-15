@@ -1,6 +1,7 @@
 package upload_metadata
 
 import (
+	"database/sql"
 	"encoding/json"
 	"github.com/jmoiron/sqlx"
 	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/logger"
@@ -38,4 +39,18 @@ func (s *psql) updateMetadata(metadata []Metadata) (int, error) {
 
 type ValueData struct {
 	Value string `json:"value" db:"value" valid:"required"`
+}
+
+// GetIdsAutofillValueByEntityAttributeAndValue consulta un registro por su Valor
+func (s *psql) GetIdsAutofillValueByEntityAttributeAndValue(typeInput string, inputData string) ([]*Metadata, error) {
+	GetWork := "SELECT * FROM public.export_metadata_contrato_expediente_document($1, $2)"
+	var m []*Metadata
+	err := s.DB.Select(&m, GetWork, typeInput, inputData)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return m, err
+	}
+	return m, nil
 }

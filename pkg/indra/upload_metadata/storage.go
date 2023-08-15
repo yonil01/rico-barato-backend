@@ -12,6 +12,7 @@ const (
 
 type ServicesUploadMetadataRepository interface {
 	updateMetadata(metadata []Metadata) (int, error)
+	GetIdsAutofillValueByEntityAttributeAndValue(typeInput string, inputData string) ([]*Metadata, error)
 }
 
 func FactoryStorage(db *sqlx.DB, user *models.User, txID string) ServicesUploadMetadataRepository {

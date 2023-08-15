@@ -3,14 +3,15 @@ package api
 import (
 	"github.com/ansrivas/fiberprometheus/v2"
 	swagger "github.com/arsmn/fiber-swagger/v2"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/api/handler/upload_metadata"
-
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
+	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/api/handler/modules"
+	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/api/handler/reniec"
+	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/api/handler/users"
 )
 
 // @title API E11MTI.
@@ -46,6 +47,8 @@ func routes(db *sqlx.DB, loggerHttp bool, allowedOrigins string) *fiber.App {
 	}
 	TxID := uuid.New().String()
 
-	upload_metadata.RouterUploadMetadata(app, db, TxID)
+	reniec.RouterReniec(app, db, TxID)
+	users.RouterUsers(app, db, TxID)
+	modules.RouterModules(app, db, TxID)
 	return app
 }

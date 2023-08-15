@@ -5,8 +5,12 @@ import "time"
 type User struct {
 	ID                     string     `json:"id" db:"id" valid:"required,uuid"`
 	Username               string     `json:"username" db:"username" valid:"required,stringlength(5|50),matches(^[a-zA-Z0-9_]+$)"`
-	Name                   string     `json:"name,omitempty" db:"name" valid:"required,stringlength(0|255)"`
-	LastName               string     `json:"lastname,omitempty" db:"lastname" valid:"required,stringlength(0|255)"`
+	CodeStudent            string     `json:"code_student" db:"code_student" valid:"required,stringlength(5|50),matches(^[a-zA-Z0-9_]+$)"`
+	Dni                    string     `json:"dni" db:"dni" valid:"required,stringlength(5|50),matches(^[a-zA-Z0-9_]+$)"`
+	Names                  string     `json:"names,omitempty" db:"names" valid:"required,stringlength(0|255)"`
+	LastNameFather         string     `json:"lastname_father,omitempty" db:"lastname_father" valid:"required,stringlength(0|255)"`
+	LastNameMother         string     `json:"lastname_mother,omitempty" db:"lastname_mother" valid:"required,stringlength(0|255)"`
+	Email                  string     `json:"email,omitempty" db:"email" valid:"required,email,stringlength(5|255)"`
 	Password               string     `json:"password,omitempty" db:"password" valid:"-"`
 	EmailNotifications     string     `json:"email_notifications,omitempty" db:"email_notifications" valid:"required,email,stringlength(5|255)"`
 	IdentificationNumber   string     `json:"identification_number,omitempty" db:"identification_number" valid:"required,stringlength(0|255)"`

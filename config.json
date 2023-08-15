@@ -1,55 +1,37 @@
 {
   "app":{
-    "service_name": "Api-Indra-Admin",
-    "port": 1051,
+    "service_name": "Ecatch-Engine",
+    "port": 6032,
     "allowed_domains": "*",
     "path_log": "./log",
     "log_review_interval":60,
     "register_log": true,
     "rsa_private_key": "../rsa/app.rsa",
     "rsa_public_key": "../rsa/app.rsa.pub",
-    "logger_http": true,
+    "logger_http": false,
     "is_cipher": false,
-    "validate_ip": "false"
-  },
-  "db___": {
-    "engine": "postgres",
-    "server": "ecapture-db-cluster-instance-1-us-east-1c.cz34n4bxn4bs.us-east-1.rds.amazonaws.com",
-    "port": 5432,
-    "name": "alnap_test_dev_new",
-    "user": "alnaptest",
-    "password": "alnaptest2020*",
-    "instance": "",
-    "is_secure": false
-  },
-  "db_": {
-    "engine": "postgres",
-    "server": "10.0.0.5",
-    "port": 5432,
-    "name": "qa-comfandi",
-    "user": "desarrollo",
-    "password": "desarrollo2022.*",
-    "instance": "",
-    "is_secure": false
-  },
-  "db_qa_indra": {
-    "engine": "postgres",
-    "server": "34.238.213.186",
-    "port": 5432,
-    "name": "qa-indra",
-    "user": "alnaptest",
-    "password": "alnaptest2020*",
-    "instance": "",
-    "is_secure": false
+    "validate_ip": "U2FsdGVkX19v3BWlEyIr/BvH568E5r+dq/03m9qNZBQ=",
+    "path_directory": "excel",
+    "index_separator": 10
   },
   "db": {
-    "engine": "postgres",
-    "server": "localhost",
-    "port": 5432,
-    "name": "qa-indra",
-    "user": "postgres",
-    "password": "admin",
+    "engine": "sqlserver",
+    "server": "system_ccff.mssql.somee.com",
+    "port": 1433,
+    "name": "system_ccff",
+    "user": "Alvaro1560_SQLLogin_1",
+    "password": "rzvn7cw7vz",
     "instance": "",
     "is_secure": false
-  }
+  },
+  "smtp" : {
+    "port": 587,
+    "host": "in-v3.mailjet.com",
+    "email": "07366c0397ed0e45ed555e75c48247c3",
+    "password": "2565011db3640655f1c16e9ad2669561"
+  },
+"external": {
+  "reniec": "https://apiperu.dev/api/dni/",
+  "credential": "?api_token=d2d02e084de0364d652cd0ae470cb9e998af755bb9f1d90a95c112285c320a33"
+}
 }

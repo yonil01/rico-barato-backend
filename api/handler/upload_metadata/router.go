@@ -11,4 +11,6 @@ func RouterUploadMetadata(app *fiber.App, db *sqlx.DB, txID string) {
 	v1 := api.Group("/v1")
 	getWork := v1.Group("/upload-metadata")
 	getWork.Post("", h.uploadMetadata)
+	getWork.Post("generate", h.generateMetadata)
+
 }

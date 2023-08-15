@@ -14,8 +14,9 @@ var (
 )
 
 type configuration struct {
-	App App `json:"app"`
-	DB  DB  `json:"db"`
+	App      App      `json:"app"`
+	DB       DB       `json:"db"`
+	External External `json:"external"`
 }
 
 type App struct {
@@ -33,6 +34,8 @@ type App struct {
 	TLS               bool   `json:"tls"`
 	Cert              string `json:"cert"`
 	Key               string `json:"key"`
+	PathDirectory     string `json:"path_directory"`
+	IndexSeparator    int    `json:"index_separator"`
 }
 
 type DB struct {
@@ -45,6 +48,11 @@ type DB struct {
 	Instance string `json:"instance"`
 	IsSecure bool   `json:"is_secure"`
 	SSLMode  string `json:"ssl_mode"`
+}
+
+type External struct {
+	Reniec     string `json:"reniec"`
+	Credential string `json:"credential"`
 }
 
 func NewConfiguration() *configuration {

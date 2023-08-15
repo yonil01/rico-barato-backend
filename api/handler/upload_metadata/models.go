@@ -2,6 +2,11 @@ package upload_metadata
 
 import "gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/pkg/indra/upload_metadata"
 
+type RequestGenerate struct {
+	InputData string `json:"input_data"`
+	TypeInput string `json:"type_input"`
+}
+
 type RequestProcess struct {
 	Metadata []upload_metadata.Metadata `json:"metadata"`
 }

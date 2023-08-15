@@ -4,6 +4,7 @@ import "gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-captur
 
 type PortsServerUploadMetadata interface {
 	UpdateMetadata(metadata []Metadata) (int, error)
+	GetIdsAutofillValueByEntityAttributeAndValue(typeInput string, inputData string) ([]*Metadata, error)
 }
 
 type service struct {
@@ -22,4 +23,8 @@ func NewUploadMetadataService(repository ServicesUploadMetadataRepository, user 
 
 func (s *service) UpdateMetadata(metadata []Metadata) (int, error) {
 	return s.repository.updateMetadata(metadata)
+}
+
+func (s *service) GetIdsAutofillValueByEntityAttributeAndValue(typeInput string, inputData string) ([]*Metadata, error) {
+	return s.repository.GetIdsAutofillValueByEntityAttributeAndValue(typeInput, inputData)
 }
