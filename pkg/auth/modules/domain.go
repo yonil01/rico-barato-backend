@@ -36,3 +36,12 @@ func (m *Module) valid() (bool, error) {
 	}
 	return result, nil
 }
+
+type ModuleRole struct {
+	ID        string    `json:"id" db:"id" valid:"required,uuid"`
+	RoleId    string    `json:"role_id" db:"role_id" valid:"required"`
+	ElementId string    `json:"element_id" db:"element_id" valid:"required"`
+	IdUser    string    `json:"id_user" db:"id_user"`
+	CreatedAt time.Time `json:"created_at" db:"created_at"`
+	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
+}

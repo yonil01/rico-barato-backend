@@ -18,6 +18,7 @@ type ServicesUsersRepository interface {
 	delete(id string) error
 	getByID(id string) (*Users, error)
 	getAll() ([]*Users, error)
+	getByCodeStudent(id string) (*Users, error)
 }
 
 func FactoryStorage(db *sqlx.DB, user *models.User, txID string) ServicesUsersRepository {

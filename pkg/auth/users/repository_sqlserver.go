@@ -97,3 +97,16 @@ func (s *sqlserver) getAll() ([]*Users, error) {
 	}
 	return ms, nil
 }
+
+func (s *sqlserver) getByCodeStudent(codeStudent string) (*Users, error) {
+	const sqlGetByID = `SELECT convert(nvarchar(50), id) id , username, code_student, dni, names, lastname_father, lastname_mother, email, password, is_delete, is_block, created_at, updated_at FROM auth.users  WITH (NOLOCK)  WHERE code_student = @code_student `
+	mdl := Users{}
+	err := s.DB.Get(&mdl, sqlGetByID, sql.Named("code_student", codeStudent))
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return &mdl, err
+	}
+	return &mdl, nil
+}

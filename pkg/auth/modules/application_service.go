@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/logger"
 	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/models"
+	"strings"
 
 	"github.com/asaskevich/govalidator"
 )
@@ -16,6 +17,10 @@ type Service struct {
 
 type PortModules interface {
 	GetModulesByRoles(roleIDs []string, ids []string, typeArg int) ([]*Module, error)
+	GetAllModule() ([]*Module, error)
+	GetModulesRole(roleId string) ([]*ModuleRole, error)
+	DeleteModulesRole(id string) (int, error)
+	CreateModulesRole(id string, roleId string, elementId string) (*ModuleRole, int, error)
 }
 
 func NewModuleService(repository ServicesModuleRepository, user *models.User, TxID string) Service {
@@ -87,4 +92,46 @@ func (s Service) GetAllModule() ([]*Module, error) {
 
 func (s Service) GetModulesByRoles(roleIDs []string, ids []string, typeArg int) ([]*Module, error) {
 	return s.repository.GetModulesByRoles(roleIDs, ids, typeArg)
+}
+
+func (s Service) GetModulesRole(roleId string) ([]*ModuleRole, error) {
+	return s.repository.GetModulesRole(roleId)
+}
+
+func (s Service) DeleteModulesRole(id string) (int, error) {
+	if !govalidator.IsUUID(strings.ToLower(id)) {
+		logger.Error.Println(s.txID, " - don't meet validations:", fmt.Errorf("id isn't uuid"))
+		return 15, fmt.Errorf("id isn't uuid")
+	}
+
+	if err := s.repository.DeleteModuleUser(id); err != nil {
+		if err.Error() == "ecatch:108" {
+			return 108, nil
+		}
+		logger.Error.Println(s.txID, " - couldn't update row:", err)
+		return 20, err
+	}
+	return 28, nil
+}
+
+func (s Service) CreateModulesRole(id string, roleId string, elementId string) (*ModuleRole, int, error) {
+	if !govalidator.IsUUID(strings.ToLower(id)) {
+		logger.Error.Println(s.txID, " - don't meet validations:", fmt.Errorf("id isn't uuid"))
+		return nil, 15, fmt.Errorf("id isn't uuid")
+	}
+
+	newModuleRole := ModuleRole{
+		ID:        id,
+		RoleId:    roleId,
+		ElementId: elementId,
+	}
+
+	if err := s.repository.CreateModuleRole(&newModuleRole); err != nil {
+		if err.Error() == "ecatch:108" {
+			return nil, 108, nil
+		}
+		logger.Error.Println(s.txID, " - couldn't update row:", err)
+		return nil, 20, err
+	}
+	return &newModuleRole, 28, nil
 }

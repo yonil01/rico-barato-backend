@@ -9,8 +9,12 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
+	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/api/handler/attendance"
+	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/api/handler/events"
 	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/api/handler/modules"
 	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/api/handler/reniec"
+	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/api/handler/report"
+	Roles "gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/api/handler/roles"
 	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/api/handler/users"
 )
 
@@ -50,5 +54,9 @@ func routes(db *sqlx.DB, loggerHttp bool, allowedOrigins string) *fiber.App {
 	reniec.RouterReniec(app, db, TxID)
 	users.RouterUsers(app, db, TxID)
 	modules.RouterModules(app, db, TxID)
+	events.RouterEvents(app, db, TxID)
+	report.RouterReport(app, db, TxID)
+	attendance.RouterAttendance(app, db, TxID)
+	Roles.RouterRoles(app, db, TxID)
 	return app
 }

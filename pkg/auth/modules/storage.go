@@ -18,6 +18,9 @@ type ServicesModuleRepository interface {
 	GetByID(id string) (*Module, error)
 	GetAll() ([]*Module, error)
 	GetModulesByRoles(roleIDs []string, ids []string, typeArg int) ([]*Module, error)
+	GetModulesRole(id string) ([]*ModuleRole, error)
+	DeleteModuleUser(id string) error
+	CreateModuleRole(role *ModuleRole) error
 }
 
 func FactoryStorage(db *sqlx.DB, user *models.User, txID string) ServicesModuleRepository {

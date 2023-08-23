@@ -31,7 +31,7 @@
     "password": "2565011db3640655f1c16e9ad2669561"
   },
 "external": {
-  "reniec": "https://apiperu.dev/api/dni/",
-  "credential": "?api_token=d2d02e084de0364d652cd0ae470cb9e998af755bb9f1d90a95c112285c320a33"
+  "reniec": "https://dniruc.apisperu.com/api/v1/dni/",
+  "credential": "?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InlvbmlsLnJvamFzQGUtY2FwdHVyZS5jbyJ9.Rcu71yck4VAjnNAdlrNpXl-IzfKFicaGv0zpBJstMQQ"
 }
 }

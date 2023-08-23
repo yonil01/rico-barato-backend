@@ -15,6 +15,7 @@ type PortsServerUsers interface {
 	DeleteUsers(id string) (int, error)
 	GetUsersByID(id string) (*Users, int, error)
 	GetAllUsers() ([]*Users, error)
+	GetUserByCodeStudent(codeStudent string) (*Users, int, error)
 }
 
 type service struct {
@@ -79,6 +80,15 @@ func (s *service) GetUsersByID(id string) (*Users, int, error) {
 		return nil, 15, fmt.Errorf("id isn't uuid")
 	}
 	m, err := s.repository.getByID(id)
+	if err != nil {
+		logger.Error.Println(s.txID, " - couldn`t getByID row:", err)
+		return nil, 22, err
+	}
+	return m, 29, nil
+}
+
+func (s *service) GetUserByCodeStudent(codeStudent string) (*Users, int, error) {
+	m, err := s.repository.getByCodeStudent(codeStudent)
 	if err != nil {
 		logger.Error.Println(s.txID, " - couldn`t getByID row:", err)
 		return nil, 22, err

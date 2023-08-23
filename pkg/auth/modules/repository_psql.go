@@ -3,11 +3,11 @@ package modules
 import (
 	"database/sql"
 	"fmt"
+	"github.com/jmoiron/sqlx"
 	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/helper"
 	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/logger"
 	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/models"
-
-	"github.com/jmoiron/sqlx"
+	"time"
 )
 
 // psql estructura de conexión a la BD de postgresql
@@ -119,4 +119,45 @@ func (s *psql) GetModulesByRoles(roleIDs []string, ids []string, typeArg int) ([
 		return ms, err
 	}
 	return ms, nil
+}
+
+func (s *psql) GetModulesRole(roleId string) ([]*ModuleRole, error) {
+	const sqlGetByID = `select id, role_id, element_id, id_user, created_at, updated_at  from [auth].[roles_elements] where role_id = @role_id`
+	var mdl []*ModuleRole
+	err := s.DB.Select(&mdl, sqlGetByID, sql.Named("role_id", roleId))
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		logger.Error.Printf(s.TxID, " - couldn't execute GetByID Module: %v", err)
+		return mdl, err
+	}
+	return mdl, nil
+}
+
+func (s *psql) DeleteModuleUser(id string) error {
+	m := Module{ID: id, IdUser: s.user.ID}
+	const sqlDelete = `DELETE from [auth].[roles_elements] WHERE id = :id `
+	rs, err := s.DB.NamedExec(sqlDelete, &m)
+	if err != nil {
+		logger.Error.Printf(s.TxID, " - couldn't delete Module: %v", err)
+		return err
+	}
+	if i, _ := rs.RowsAffected(); i == 0 {
+		return fmt.Errorf("ecatch:108")
+	}
+	return nil
+}
+
+func (s *psql) CreateModuleRole(m *ModuleRole) error {
+	const sqlInsert = `INSERT INTO auth.roles_elements (id ,role_id, element_id, id_user, created_at, updated_at) VALUES (:id ,:role_id, :element_id, :id_user, GetDate(), GetDate()) `
+	m.IdUser = s.user.ID
+	m.CreatedAt = time.Now()
+	m.UpdatedAt = time.Now()
+	_, err := s.DB.NamedExec(sqlInsert, &m)
+	if err != nil {
+		logger.Error.Printf(s.TxID, " - couldn't insert Module: %v", err)
+		return err
+	}
+	return nil
 }
