@@ -12,5 +12,6 @@ func RouterUsers(app *fiber.App, db *sqlx.DB, txID string) {
 	getWork := v1.Group("/users")
 	getWork.Post("create", h.CreateUser)
 	getWork.Get("all", h.GetUsers)
+	getWork.Get("/:id", h.GetUserById)
 	getWork.Get("delete/:id", h.DeleteUser)
 }

@@ -15,11 +15,11 @@ type RequestUsers struct {
 }
 
 type ResponseUsers struct {
-	Error bool        `json:"error"`
-	Data  users.Users `json:"data"`
-	Code  int         `json:"code"`
-	Type  string      `json:"type"`
-	Msg   string      `json:"msg"`
+	Error bool         `json:"error"`
+	Data  *users.Users `json:"data"`
+	Code  int          `json:"code"`
+	Type  string       `json:"type"`
+	Msg   string       `json:"msg"`
 }
 
 type ResponseUsersAll struct {

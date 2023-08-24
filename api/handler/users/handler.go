@@ -37,7 +37,7 @@ func (h *handlerUsers) CreateUser(c *fiber.Ctx) error {
 		return c.Status(http.StatusAccepted).JSON(res)
 	}
 
-	res.Data = *req
+	res.Data = req
 	res.Error = false
 
 	return c.Status(http.StatusOK).JSON(res)
@@ -76,6 +76,26 @@ func (h *handlerUsers) DeleteUser(c *fiber.Ctx) error {
 	}
 
 	res.Data = nil
+	res.Error = false
+
+	return c.Status(http.StatusOK).JSON(res)
+}
+
+func (h *handlerUsers) GetUserById(c *fiber.Ctx) error {
+	msg := msgs.Model{}
+	res := ResponseUsers{Error: true}
+	srvUsers := auth.NewServerAuth(h.dB, h.user, h.txID)
+
+	id := c.Params("id")
+
+	usr, cod, err := srvUsers.Users.GetUsersByID(id)
+	if err != nil {
+		logger.Error.Printf("Couldn't insert suffragers: %v", err)
+		res.Code, res.Type, res.Msg = msg.GetByCode(cod)
+		return c.Status(http.StatusAccepted).JSON(res)
+	}
+
+	res.Data = usr
 	res.Error = false
 
 	return c.Status(http.StatusOK).JSON(res)

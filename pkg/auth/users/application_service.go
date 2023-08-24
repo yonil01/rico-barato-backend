@@ -75,7 +75,7 @@ func (s *service) DeleteUsers(id string) (int, error) {
 }
 
 func (s *service) GetUsersByID(id string) (*Users, int, error) {
-	if !govalidator.IsUUID(id) {
+	if !govalidator.IsUUID(strings.ToLower(id)) {
 		logger.Error.Println(s.txID, " - don't meet validations:", fmt.Errorf("id isn't uuid"))
 		return nil, 15, fmt.Errorf("id isn't uuid")
 	}

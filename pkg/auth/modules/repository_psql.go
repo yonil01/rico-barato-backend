@@ -85,7 +85,9 @@ func (s *psql) GetByID(id string) (*Module, error) {
 // GetAll consulta todos los registros de la BD
 func (s *psql) GetAll() ([]*Module, error) {
 	var ms []*Module
-	const sqlGetAll = `SELECT id , name, description, class, created_at, updated_at FROM auth.modules WHERE is_delete = false`
+	const sqlGetAll = `select el.id, mm.name, mm.description, mm.class, mm.created_at, mm.updated_at from [auth].[modules_components_elements] el
+				join [auth].[modules_components] mc on mc.id = el.component_id
+				join auth.modules mm on mm.id = mc.module_id WHERE mm.is_delete = false`
 	query := sqlGetAll
 	err := s.DB.Select(&ms, query)
 	if err != nil {

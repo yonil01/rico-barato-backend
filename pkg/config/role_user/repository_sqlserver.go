@@ -30,7 +30,7 @@ func (s *sqlserver) create(m *RoleUser) error {
 	date := time.Now()
 	m.UpdatedAt = date
 	m.CreatedAt = date
-	const sqlInsert = `INSERT INTO auth.users_roles (id ,user_id, role_id, id_user, created_at, updated_at) VALUES (:id ,:name, :user_id, :role_id, :id_user, :created_at, :updated_at) `
+	const sqlInsert = `INSERT INTO auth.users_roles (id ,user_id, role_id, id_user, is_delete, created_at, updated_at) VALUES (:id , :user_id, :role_id, :id_user, 0, :created_at, :updated_at) `
 	rs, err := s.DB.NamedExec(sqlInsert, &m)
 	if err != nil {
 		return err

@@ -19,6 +19,7 @@ func RouterRoles(app *fiber.App, db *sqlx.DB, txID string) {
 	roleUser := v1.Group("/role_user")
 	roleUser.Get("", h.GetRolesUser)
 	roleUser.Get("/:id", h.GetRoleUser)
-	roleUser.Get("/:delete", h.GetRoleUser)
-	roleUser.Get("all/id", h.GetRoleUserByUser)
+	roleUser.Get("/delete/:id", h.DeleteRoleUser)
+	roleUser.Get("all/:id", h.GetRoleUserByUser)
+	roleUser.Post("create", h.CreateRoleUser)
 }
