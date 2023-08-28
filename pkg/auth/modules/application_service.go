@@ -1,9 +1,9 @@
 package modules
 
 import (
+	"backend-ccff/internal/logger"
+	"backend-ccff/internal/models"
 	"fmt"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/logger"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/models"
 	"strings"
 
 	"github.com/asaskevich/govalidator"
@@ -48,7 +48,7 @@ func (s Service) UpdateModule(id string, Name string, Description string, Class 
 		return m, 15, err
 	}
 	if err := s.repository.Update(m); err != nil {
-		if err.Error() == "ecatch:108" {
+		if err.Error() == "Dev-cff:108" {
 			return m, 108, nil
 		}
 		logger.Error.Println(s.txID, " - couldn't update Module :", err)
@@ -64,7 +64,7 @@ func (s Service) DeleteModule(id string) (int, error) {
 	}
 
 	if err := s.repository.Delete(id); err != nil {
-		if err.Error() == "ecatch:108" {
+		if err.Error() == "Dev-cff:108" {
 			return 108, nil
 		}
 		logger.Error.Println(s.txID, " - couldn't update row:", err)
@@ -105,7 +105,7 @@ func (s Service) DeleteModulesRole(id string) (int, error) {
 	}
 
 	if err := s.repository.DeleteModuleUser(id); err != nil {
-		if err.Error() == "ecatch:108" {
+		if err.Error() == "Dev-cff:108" {
 			return 108, nil
 		}
 		logger.Error.Println(s.txID, " - couldn't update row:", err)
@@ -127,7 +127,7 @@ func (s Service) CreateModulesRole(id string, roleId string, elementId string) (
 	}
 
 	if err := s.repository.CreateModuleRole(&newModuleRole); err != nil {
-		if err.Error() == "ecatch:108" {
+		if err.Error() == "Dev-cff:108" {
 			return nil, 108, nil
 		}
 		logger.Error.Println(s.txID, " - couldn't update row:", err)

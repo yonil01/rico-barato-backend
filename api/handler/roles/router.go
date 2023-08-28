@@ -15,6 +15,7 @@ func RouterRoles(app *fiber.App, db *sqlx.DB, txID string) {
 	getWork.Post("update", h.UpdateRoles)
 	getWork.Get("delete/:id", h.DeleteRole)
 	getWork.Get(":id", h.GetRole)
+	getWork.Post("name", h.GetRoleByName)
 
 	roleUser := v1.Group("/role_user")
 	roleUser.Get("", h.GetRolesUser)

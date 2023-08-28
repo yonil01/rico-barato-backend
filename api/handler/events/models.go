@@ -1,7 +1,7 @@
 package events
 
 import (
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/pkg/config/events"
+	"backend-ccff/pkg/config/events"
 	"time"
 )
 

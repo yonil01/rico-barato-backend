@@ -1,11 +1,11 @@
 package modules
 
 import (
+	"backend-ccff/internal/helper"
+	"backend-ccff/internal/logger"
+	"backend-ccff/internal/models"
 	"database/sql"
 	"fmt"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/helper"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/logger"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/models"
 	"time"
 
 	"github.com/jmoiron/sqlx"
@@ -48,7 +48,7 @@ func (s *sqlserver) Update(m *Module) error {
 		return err
 	}
 	if i, _ := rs.RowsAffected(); i == 0 {
-		return fmt.Errorf("ecatch:108")
+		return fmt.Errorf("Dev-cff:108")
 	}
 	return nil
 }
@@ -63,7 +63,7 @@ func (s *sqlserver) Delete(id string) error {
 		return err
 	}
 	if i, _ := rs.RowsAffected(); i == 0 {
-		return fmt.Errorf("ecatch:108")
+		return fmt.Errorf("Dev-cff:108")
 	}
 	return nil
 }
@@ -86,7 +86,9 @@ func (s *sqlserver) GetByID(id string) (*Module, error) {
 // GetAll consulta todos los registros de la BD
 func (s *sqlserver) GetAll() ([]*Module, error) {
 	var ms []*Module
-	const sqlGetAll = `SELECT convert(nvarchar(50), id) id , name, description, class, created_at, updated_at FROM auth.modules  WITH (NOLOCK)  WHERE  is_delete = 0`
+	const sqlGetAll = `select convert(nvarchar(50), el.id) id, mm.name, mm.description, mm.class, mm.created_at, mm.updated_at from [auth].[modules_components_elements] el
+				join [auth].[modules_components] mc on mc.id = el.component_id
+				join auth.modules mm on mm.id = mc.module_id WHERE mm.is_delete = 0`
 	query := sqlGetAll
 	err := s.DB.Select(&ms, query)
 	if err != nil {
@@ -144,7 +146,7 @@ func (s *sqlserver) DeleteModuleUser(id string) error {
 		return err
 	}
 	if i, _ := rs.RowsAffected(); i == 0 {
-		return fmt.Errorf("ecatch:108")
+		return fmt.Errorf("Dev-cff:108")
 	}
 	return nil
 }

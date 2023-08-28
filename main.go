@@ -1,8 +1,8 @@
 package main
 
 import (
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/api"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/env"
+	"backend-ccff/api"
+	"backend-ccff/internal/env"
 )
 
 func main() {

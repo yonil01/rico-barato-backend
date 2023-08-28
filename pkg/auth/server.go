@@ -1,11 +1,11 @@
 package auth
 
 import (
+	"backend-ccff/internal/models"
+	"backend-ccff/pkg/auth/modules"
+	"backend-ccff/pkg/auth/roles"
+	"backend-ccff/pkg/auth/users"
 	"github.com/jmoiron/sqlx"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/models"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/pkg/auth/modules"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/pkg/auth/roles"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/pkg/auth/users"
 )
 
 type ServerAuth struct {

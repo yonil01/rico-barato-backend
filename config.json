@@ -1,6 +1,6 @@
 {
   "app":{
-    "service_name": "Ecatch-Engine",
+    "service_name": "backend-cff",
     "port": 6032,
     "allowed_domains": "*",
     "path_log": "./log",

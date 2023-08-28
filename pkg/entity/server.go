@@ -1,9 +1,9 @@
 package entity
 
 import (
+	"backend-ccff/internal/models"
+	"backend-ccff/pkg/entity/attendance"
 	"github.com/jmoiron/sqlx"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/models"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/pkg/entity/attendance"
 )
 
 type ServerEntity struct {

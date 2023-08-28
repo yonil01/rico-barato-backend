@@ -1,12 +1,12 @@
 package dni
 
 import (
+	"backend-ccff/internal/env"
+	"backend-ccff/internal/logger"
+	"backend-ccff/internal/models"
+	"backend-ccff/internal/ws"
 	"encoding/json"
 	"fmt"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/env"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/logger"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/models"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/ws"
 )
 
 type PortsServerReniec interface {

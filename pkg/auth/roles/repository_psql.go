@@ -1,11 +1,11 @@
 package roles
 
 import (
+	"backend-ccff/internal/helper"
+	"backend-ccff/internal/logger"
+	"backend-ccff/internal/models"
 	"database/sql"
 	"fmt"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/helper"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/logger"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/models"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -47,7 +47,7 @@ func (s *psql) Update(m *Role) error {
 		return err
 	}
 	if i, _ := rs.RowsAffected(); i == 0 {
-		return fmt.Errorf("ecatch:108")
+		return fmt.Errorf("Dev-cff:108")
 	}
 	return nil
 }
@@ -62,7 +62,7 @@ func (s *psql) Delete(id string) error {
 		return err
 	}
 	if i, _ := rs.RowsAffected(); i == 0 {
-		return fmt.Errorf("ecatch:108")
+		return fmt.Errorf("Dev-cff:108")
 	}
 	return nil
 }
@@ -183,6 +183,21 @@ func (s *psql) GetRolesByQueueId(queueId string) ([]*Role, error) {
 	FROM cfg.queues_roles qr JOIN auth.roles r ON r.id = qr.role_id WHERE qr.queue_id = $1`
 
 	err := s.DB.Select(&ms, sqlGetRolesByQueueId, queueId)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		logger.Error.Printf(s.TxID, " - couldn't execute GetRolesByQueueId auth.roles: %v", err)
+		return ms, err
+	}
+	return ms, nil
+}
+
+func (s *psql) GetRoleByName(name string) (*Role, error) {
+	var ms *Role
+	const sqlGetRolesByQueueId = `select convert(nvarchar(50), id) id , name, description, sessions_allowed, see_all_users, created_at, updated_at FROM auth.roles  WITH (NOLOCK) WHERE  UPPER(description)  = Upper($1)`
+
+	err := s.DB.Get(&ms, sqlGetRolesByQueueId, name)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, nil

@@ -1,14 +1,18 @@
 package Roles
 
 import (
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/pkg/auth/roles"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/pkg/config/role_user"
+	"backend-ccff/pkg/auth/roles"
+	"backend-ccff/pkg/config/role_user"
 )
 
 type RequestRoles struct {
 	Id          string `json:"id"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
+}
+
+type RequestRoleName struct {
+	Name string `json:"name"`
 }
 
 type ResponseAllRoles struct {

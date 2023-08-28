@@ -1,8 +1,8 @@
 package dni
 
 import (
+	"backend-ccff/internal/models"
 	"github.com/jmoiron/sqlx"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/models"
 )
 
 type psql struct {

@@ -1,13 +1,13 @@
 package modules
 
 import (
+	"backend-ccff/internal/logger"
+	"backend-ccff/internal/middleware"
+	"backend-ccff/internal/models"
+	"backend-ccff/internal/msgs"
+	"backend-ccff/pkg/auth"
 	"github.com/gofiber/fiber/v2"
 	"github.com/jmoiron/sqlx"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/logger"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/middleware"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/models"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/msgs"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/pkg/auth"
 	"net/http"
 )
 

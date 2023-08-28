@@ -1,4 +1,4 @@
-module gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin
+module backend-ccff
 
 go 1.18
 

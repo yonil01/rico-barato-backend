@@ -1,8 +1,8 @@
 package env
 
 import (
+	"backend-ccff/internal/ciphers"
 	"encoding/json"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/ciphers"
 	"io/ioutil"
 	"log"
 	"sync"

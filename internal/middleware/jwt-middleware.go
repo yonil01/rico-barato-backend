@@ -1,14 +1,14 @@
 package middleware
 
 import (
+	"backend-ccff/internal/env"
+	"backend-ccff/internal/logger"
+	"backend-ccff/internal/models"
 	"crypto/rsa"
 	"fmt"
 	"github.com/form3tech-oss/jwt-go"
 	"github.com/gofiber/fiber/v2"
 	jwtware "github.com/gofiber/jwt/v2"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/env"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/logger"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/models"
 	"io/ioutil"
 )
 

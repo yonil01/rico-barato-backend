@@ -1,12 +1,12 @@
 package modules
 
 import (
+	"backend-ccff/internal/helper"
+	"backend-ccff/internal/logger"
+	"backend-ccff/internal/models"
 	"database/sql"
 	"fmt"
 	"github.com/jmoiron/sqlx"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/helper"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/logger"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/models"
 	"time"
 )
 
@@ -47,7 +47,7 @@ func (s *psql) Update(m *Module) error {
 		return err
 	}
 	if i, _ := rs.RowsAffected(); i == 0 {
-		return fmt.Errorf("ecatch:108")
+		return fmt.Errorf("Dev-cff:108")
 	}
 	return nil
 }
@@ -62,7 +62,7 @@ func (s *psql) Delete(id string) error {
 		return err
 	}
 	if i, _ := rs.RowsAffected(); i == 0 {
-		return fmt.Errorf("ecatch:108")
+		return fmt.Errorf("Dev-cff:108")
 	}
 	return nil
 }
@@ -146,7 +146,7 @@ func (s *psql) DeleteModuleUser(id string) error {
 		return err
 	}
 	if i, _ := rs.RowsAffected(); i == 0 {
-		return fmt.Errorf("ecatch:108")
+		return fmt.Errorf("Dev-cff:108")
 	}
 	return nil
 }

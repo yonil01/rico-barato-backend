@@ -1,6 +1,13 @@
 package api
 
 import (
+	"backend-ccff/api/handler/attendance"
+	"backend-ccff/api/handler/events"
+	"backend-ccff/api/handler/modules"
+	"backend-ccff/api/handler/reniec"
+	"backend-ccff/api/handler/report"
+	Roles "backend-ccff/api/handler/roles"
+	"backend-ccff/api/handler/users"
 	"github.com/ansrivas/fiberprometheus/v2"
 	swagger "github.com/arsmn/fiber-swagger/v2"
 	"github.com/gofiber/fiber/v2"
@@ -9,13 +16,6 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/api/handler/attendance"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/api/handler/events"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/api/handler/modules"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/api/handler/reniec"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/api/handler/report"
-	Roles "gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/api/handler/roles"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/api/handler/users"
 )
 
 // @title API E11MTI.

@@ -1,7 +1,7 @@
 package attendance
 
 import (
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/pkg/entity/attendance"
+	"backend-ccff/pkg/entity/attendance"
 	"time"
 )
 

@@ -1,8 +1,8 @@
 package ws
 
 import (
+	"backend-ccff/internal/logger"
 	"bytes"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/logger"
 	"io"
 	"io/ioutil"
 	"net/http"

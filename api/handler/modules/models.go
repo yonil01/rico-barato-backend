@@ -1,6 +1,6 @@
 package modules
 
-import "gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/pkg/auth/modules"
+import "backend-ccff/pkg/auth/modules"
 
 type RequestModulesUser struct {
 	Ids  []string `json:"ids"`

@@ -1,10 +1,9 @@
 package reniec
 
 import (
+	"backend-ccff/internal/models"
+	"backend-ccff/pkg/reniec/dni"
 	"github.com/jmoiron/sqlx"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/models"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/pkg/indra/upload_metadata"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/pkg/reniec/dni"
 )
 
 type ServerReniec struct {
@@ -12,7 +11,7 @@ type ServerReniec struct {
 }
 
 func NewServerReniec(db *sqlx.DB, user *models.User, txID string) *ServerReniec {
-	repoDni := upload_metadata.FactoryStorage(db, user, txID)
+	repoDni := dni.FactoryStorage(db, user, txID)
 	return &ServerReniec{
 		Dni: dni.NewReniecService(repoDni, user, txID),
 	}

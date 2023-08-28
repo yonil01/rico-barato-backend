@@ -1,9 +1,9 @@
 package roles
 
 import (
+	"backend-ccff/internal/logger"
+	"backend-ccff/internal/models"
 	"fmt"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/logger"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/models"
 	"strings"
 
 	"github.com/asaskevich/govalidator"
@@ -21,6 +21,7 @@ type PortRoles interface {
 	GetAllRole() ([]*Role, error)
 	DeleteRole(id string) (int, error)
 	GetRoleByID(id string) (*Role, int, error)
+	GetRoleByName(name string) (*Role, int, error)
 }
 
 func NewRoleService(repository ServicesRoleRepository, user *models.User, TxID string) Service {
@@ -46,7 +47,7 @@ func (s Service) UpdateRole(id string, Name string, Description string, Sessions
 		return m, 15, err
 	}
 	if err := s.repository.Update(m); err != nil {
-		if err.Error() == "ecatch:108" {
+		if err.Error() == "Dev-cff:108" {
 			return m, 108, nil
 		}
 		logger.Error.Println(s.txID, " - couldn't update Role :", err)
@@ -61,7 +62,7 @@ func (s Service) DeleteRole(id string) (int, error) {
 	}
 
 	if err := s.repository.Delete(id); err != nil {
-		if err.Error() == "ecatch:108" {
+		if err.Error() == "Dev-cff:108" {
 			return 108, nil
 		}
 		logger.Error.Println(s.txID, " - couldn't update row:", err)
@@ -114,6 +115,15 @@ func (s Service) GetRolesByQueue(queueId string) ([]*Role, int, error) {
 	ms, err := s.repository.GetRolesByQueueId(queueId)
 	if err != nil {
 		logger.Error.Println(s.txID, " - couldn't GetRolesByUserID row:", err)
+		return nil, 22, err
+	}
+	return ms, 29, nil
+}
+
+func (s Service) GetRoleByName(name string) (*Role, int, error) {
+	ms, err := s.repository.GetRoleByName(name)
+	if err != nil {
+		logger.Error.Println(s.txID, " - couldn't GetRoleByName row:", err)
 		return nil, 22, err
 	}
 	return ms, 29, nil

@@ -1,10 +1,10 @@
 package role_user
 
 import (
+	"backend-ccff/internal/logger"
+	"backend-ccff/internal/models"
 	"fmt"
 	"github.com/asaskevich/govalidator"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/logger"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/models"
 )
 
 type PortsServerRoleUser interface {
@@ -34,7 +34,7 @@ func (s *service) CreateRoleUser(id string, userId string, roleId string) (*Role
 	}
 
 	if err := s.repository.create(m); err != nil {
-		if err.Error() == "ecatch:108" {
+		if err.Error() == "Dev-cff:108" {
 			return m, 108, nil
 		}
 		logger.Error.Println(s.txID, " - couldn't create RoleUser :", err)
@@ -63,7 +63,7 @@ func (s *service) DeleteRoleUser(id string) (int, error) {
 	}
 
 	if err := s.repository.delete(id); err != nil {
-		if err.Error() == "ecatch:108" {
+		if err.Error() == "Dev-cff:108" {
 			return 108, nil
 		}
 		logger.Error.Println(s.txID, " - couldn't update row:", err)

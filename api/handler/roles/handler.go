@@ -1,14 +1,14 @@
 package Roles
 
 import (
+	"backend-ccff/internal/logger"
+	"backend-ccff/internal/middleware"
+	"backend-ccff/internal/models"
+	"backend-ccff/internal/msgs"
+	"backend-ccff/pkg/auth"
+	"backend-ccff/pkg/config"
 	"github.com/gofiber/fiber/v2"
 	"github.com/jmoiron/sqlx"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/logger"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/middleware"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/models"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/msgs"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/pkg/auth"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/pkg/config"
 	"net/http"
 )
 
@@ -155,6 +155,43 @@ func (h *handlerRoles) GetRole(c *fiber.Ctx) error {
 		return c.Status(http.StatusAccepted).JSON(res)
 	}
 	res.Data = resp
+	res.Error = false
+
+	return c.Status(http.StatusOK).JSON(res)
+}
+
+func (h *handlerRoles) GetRoleByName(c *fiber.Ctx) error {
+	msg := msgs.Model{}
+	res := ResponseRoles{Error: true}
+
+	rqARoles := RequestRoleName{}
+
+	err := c.BodyParser(&rqARoles)
+	if err != nil {
+		logger.Error.Printf("couldn't bind model BodyParser: %v", err)
+		res.Code, res.Type, res.Msg = msg.GetByCode(1)
+		res.Msg = "couldn't bind model RequestMetadata"
+		return c.Status(http.StatusAccepted).JSON(res)
+	}
+
+	usr, err := middleware.GetUser(c)
+	if err != nil {
+		res.Error = true
+		res.Code = 99
+		res.Msg = "Error in token"
+		return c.Status(http.StatusOK).JSON(res)
+	}
+
+	srvAuth := auth.NewServerAuth(h.dB, usr, h.txID)
+
+	req, cod, err := srvAuth.Roles.GetRoleByName(rqARoles.Name)
+	if err != nil {
+		logger.Error.Printf("Couldn't insert GetRoleByName: %v", err)
+		res.Code, res.Type, res.Msg = msg.GetByCode(cod)
+		return c.Status(http.StatusAccepted).JSON(res)
+	}
+
+	res.Data = req
 	res.Error = false
 
 	return c.Status(http.StatusOK).JSON(res)

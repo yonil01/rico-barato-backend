@@ -1,11 +1,11 @@
 package generator
 
 import (
+	"backend-ccff/internal/env"
+	"backend-ccff/internal/logger"
+	"backend-ccff/pkg/indra/upload_metadata"
 	"fmt"
 	"github.com/xuri/excelize/v2"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/env"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/logger"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/pkg/indra/upload_metadata"
 	"os"
 	"strconv"
 	"time"

@@ -1,8 +1,8 @@
 package logger
 
 import (
+	"backend-ccff/internal/env"
 	"fmt"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/env"
 	"io/ioutil"
 	"log"
 	"os"

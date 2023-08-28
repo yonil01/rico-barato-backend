@@ -1,6 +1,6 @@
 package users
 
-import "gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/pkg/auth/users"
+import "backend-ccff/pkg/auth/users"
 
 type RequestUsers struct {
 	Id             string `json:"id"`

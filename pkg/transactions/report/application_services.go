@@ -1,8 +1,8 @@
 package report
 
 import (
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/logger"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/models"
+	"backend-ccff/internal/logger"
+	"backend-ccff/internal/models"
 )
 
 type PortsServerReport interface {

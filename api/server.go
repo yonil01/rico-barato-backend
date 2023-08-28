@@ -11,17 +11,11 @@ import (
 
 const (
 	version = "0.0.1"
-	website = "https://www.ecapture.com.co"
-	banner  = `
-███████  ██████  █████  ████████  ██████ ██   ██ 
-██      ██      ██   ██    ██    ██      ██   ██ 
-█████   ██      ███████    ██    ██      ███████ 
-██      ██      ██   ██    ██    ██      ██   ██ 
-███████  ██████ ██   ██    ██     ██████ ██   ██ 
-                                                 `
+	website = "Organization: CFF"
+	banner  = `DESARROLLADO POR CENTRO FIIS - UNAS`
 
-	description = `Ecatch BPM - %s - Port: %s
-by Ecapture
+	description = `CFF - %s - Port: %s
+by FIIS-DELELOP
 Version: %s
 %s`
 )

@@ -1,9 +1,9 @@
 package events
 
 import (
+	"backend-ccff/internal/models"
 	"database/sql"
 	"fmt"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/models"
 	"time"
 
 	"github.com/jmoiron/sqlx"
@@ -35,7 +35,7 @@ func (s *psql) create(m *Events) error {
 		return err
 	}
 	if i, _ := rs.RowsAffected(); i == 0 {
-		return fmt.Errorf("ecatch:108")
+		return fmt.Errorf("Dev-cff:108")
 	}
 	return nil
 }
@@ -50,7 +50,7 @@ func (s *psql) update(m *Events) error {
 		return err
 	}
 	if i, _ := rs.RowsAffected(); i == 0 {
-		return fmt.Errorf("ecatch:108")
+		return fmt.Errorf("Dev-cff:108")
 	}
 	return nil
 }
@@ -64,7 +64,7 @@ func (s *psql) delete(id string) error {
 		return err
 	}
 	if i, _ := rs.RowsAffected(); i == 0 {
-		return fmt.Errorf("ecatch:108")
+		return fmt.Errorf("Dev-cff:108")
 	}
 	return nil
 }

@@ -1,9 +1,9 @@
 package attendance
 
 import (
+	"backend-ccff/internal/logger"
+	"backend-ccff/internal/models"
 	"fmt"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/logger"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/models"
 )
 
 type PortsServerAttendance interface {
@@ -31,7 +31,7 @@ func (s *service) CreateAttendance(idUser string, idEvent string, isDisable int,
 		return m, 15, err
 	}
 	if err := s.repository.create(m); err != nil {
-		if err.Error() == "ecatch:108" {
+		if err.Error() == "Dev-cff:108" {
 			return m, 108, nil
 		}
 		logger.Error.Println(s.txID, " - couldn't create Attendance :", err)
@@ -64,7 +64,7 @@ func (s *service) DeleteAttendance(id int) (int, error) {
 	}
 
 	if err := s.repository.delete(id); err != nil {
-		if err.Error() == "ecatch:108" {
+		if err.Error() == "Dev-cff:108" {
 			return 108, nil
 		}
 		logger.Error.Println(s.txID, " - couldn't update row:", err)

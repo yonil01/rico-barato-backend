@@ -1,9 +1,9 @@
 package helper
 
 import (
+	"backend-ccff/internal/logger"
 	"encoding/json"
 	"fmt"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/logger"
 	"strings"
 )
 

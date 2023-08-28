@@ -1,10 +1,10 @@
 package config
 
 import (
+	"backend-ccff/internal/models"
+	"backend-ccff/pkg/config/events"
+	"backend-ccff/pkg/config/role_user"
 	"github.com/jmoiron/sqlx"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/internal/models"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/pkg/config/events"
-	"gitlab.ecapture.com.co/gitlab-instance/gitlab-instance-cea63b52/e-capture/indra/api-indra-admin/pkg/config/role_user"
 )
 
 type ServerConfig struct {
