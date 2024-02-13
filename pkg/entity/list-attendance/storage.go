@@ -1,4 +1,4 @@
-package attendance
+package list_ListAttendance
 
 import (
 	"backend-ccff/internal/logger"
@@ -12,24 +12,25 @@ const (
 	Oracle     = "oci8"
 )
 
-type ServicesAttendanceRepository interface {
-	create(m *Attendance) error
-	update(m *Attendance) error
+type ServicesListAttendanceRepository interface {
+	create(m *ListAttendance) error
+	update(m *ListAttendance) error
 	delete(id int) error
-	getByID(id int) (*Attendance, error)
-	getAll() ([]*Attendance, error)
+	getByID(id int) (*ListAttendance, error)
+	getAll() ([]*ListAttendance, error)
+	getListAttendanceUser() ([]*ListAttendance, error)
 }
 
-func FactoryStorage(db *sqlx.DB, user *models.User, txID string) ServicesAttendanceRepository {
-	var s ServicesAttendanceRepository
+func FactoryStorage(db *sqlx.DB, user *models.User, txID string) ServicesListAttendanceRepository {
+	var s ServicesListAttendanceRepository
 	engine := db.DriverName()
 	switch engine {
 	case SqlServer:
-		return newAttendanceSqlServerRepository(db, user, txID)
+		return newListAttendanceSqlServerRepository(db, user, txID)
 	case Postgresql:
-		return newAttendancePsqlRepository(db, user, txID)
+		return newListAttendancePsqlRepository(db, user, txID)
 	case Oracle:
-		return newAttendanceOrclRepository(db, user, txID)
+		return newListAttendanceOrclRepository(db, user, txID)
 	default:
 		logger.Error.Println("el motor de base de datos no está implementado.", engine)
 	}

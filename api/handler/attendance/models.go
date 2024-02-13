@@ -2,6 +2,7 @@ package attendance
 
 import (
 	"backend-ccff/pkg/entity/attendance"
+	list_ListAttendance "backend-ccff/pkg/entity/list-attendance"
 	"time"
 )
 
@@ -25,4 +26,12 @@ type ResponseAttendance struct {
 	Code  int                    `json:"code"`
 	Type  string                 `json:"type"`
 	Msg   string                 `json:"msg"`
+}
+
+type ResponseListAttendance struct {
+	Error bool                                  `json:"error"`
+	Data  []*list_ListAttendance.ListAttendance `json:"data"`
+	Code  int                                   `json:"code"`
+	Type  string                                `json:"type"`
+	Msg   string                                `json:"msg"`
 }

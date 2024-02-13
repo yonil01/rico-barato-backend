@@ -11,4 +11,5 @@ func RouterAttendance(app *fiber.App, db *sqlx.DB, txID string) {
 	v1 := api.Group("/v1")
 	getWork := v1.Group("/attendance")
 	getWork.Post("create", h.CreateAttendance)
+	getWork.Get("", h.GetAttendanceUser)
 }

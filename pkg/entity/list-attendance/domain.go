@@ -1,4 +1,4 @@
-package attendance
+package list_ListAttendance
 
 import (
 	"time"
@@ -6,40 +6,34 @@ import (
 	"github.com/asaskevich/govalidator"
 )
 
-// Attendance  Model struct Attendance
-type Attendance struct {
+// ListAttendance  Model struct ListAttendance
+type ListAttendance struct {
 	ID        int       `json:"id" db:"id" valid:"-"`
-	IdUser    string    `json:"id_user" db:"id_user" valid:"required"`
-	IdEvent   string    `json:"id_event" db:"id_event" valid:"required"`
-	IsDisable int       `json:"is_disable" db:"is_disable" valid:"-"`
+	EventName string    `json:"event_name" db:"event_name" valid:"required"`
 	IsDelete  int       `json:"is_delete" db:"is_delete" valid:"-"`
-	UserId    string    `json:"user_id" db:"user_id" valid:"required"`
+	UserName  string    `json:"user_name" db:"user_name" valid:"-"`
 	CreatedAt time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
 }
 
-func NewAttendance(id int, idUser string, idEvent string, isDisable int, isDelete int, userId string) *Attendance {
-	return &Attendance{
+func NewListAttendance(id int, eventName string, isDelete int, userName string) *ListAttendance {
+	return &ListAttendance{
 		ID:        id,
-		IdUser:    idUser,
-		IdEvent:   idEvent,
-		IsDisable: isDisable,
+		EventName: eventName,
 		IsDelete:  isDelete,
-		UserId:    userId,
+		UserName:  userName,
 	}
 }
 
-func NewCreateAttendance(idUser string, idEvent string, isDisable int, isDelete int, userId string) *Attendance {
-	return &Attendance{
-		IdUser:    idUser,
-		IdEvent:   idEvent,
-		IsDisable: isDisable,
+func NewCreateListAttendance(eventName string, isDelete int, userName string) *ListAttendance {
+	return &ListAttendance{
+		EventName: eventName,
 		IsDelete:  isDelete,
-		UserId:    userId,
+		UserName:  userName,
 	}
 }
 
-func (m *Attendance) valid() (bool, error) {
+func (m *ListAttendance) valid() (bool, error) {
 	result, err := govalidator.ValidateStruct(m)
 	if err != nil {
 		return result, err

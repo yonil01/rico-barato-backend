@@ -60,3 +60,30 @@ func (h *handlerAttendance) CreateAttendance(c *fiber.Ctx) error {
 
 	return c.Status(http.StatusOK).JSON(res)
 }
+
+func (h *handlerAttendance) GetAttendanceUser(c *fiber.Ctx) error {
+	msg := msgs.Model{}
+	res := ResponseListAttendance{Error: true}
+
+	usr, err := middleware.GetUser(c)
+	if err != nil {
+		res.Error = true
+		res.Code = 99
+		res.Msg = "Error in token"
+		return c.Status(http.StatusOK).JSON(res)
+	}
+
+	srvEntity := entity.NewServerEntity(h.dB, usr, h.txID)
+
+	req, cod, err := srvEntity.ListAttendance.GetListAttendanceUser()
+	if err != nil {
+		logger.Error.Printf("Couldn't insert CreateAttendance: %v", err)
+		res.Code, res.Type, res.Msg = msg.GetByCode(cod)
+		return c.Status(http.StatusAccepted).JSON(res)
+	}
+
+	res.Data = req
+	res.Error = false
+
+	return c.Status(http.StatusOK).JSON(res)
+}

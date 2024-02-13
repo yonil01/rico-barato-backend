@@ -1,4 +1,4 @@
-package attendance
+package list_ListAttendance
 
 import (
 	"backend-ccff/internal/models"
@@ -16,7 +16,7 @@ type orcl struct {
 	TxID string
 }
 
-func newAttendanceOrclRepository(db *sqlx.DB, user *models.User, txID string) *orcl {
+func newListAttendanceOrclRepository(db *sqlx.DB, user *models.User, txID string) *orcl {
 	return &orcl{
 		DB:   db,
 		user: user,
@@ -25,19 +25,15 @@ func newAttendanceOrclRepository(db *sqlx.DB, user *models.User, txID string) *o
 }
 
 // Create registra en la BD
-func (s *orcl) create(m *Attendance) error {
-	const osqlInsert = `INSERT INTO entity.attendance (id_user, id_event, is_disable, is_delete, user_id, created_at, updated_at)  VALUES (:id_user, :id_event, :is_disable, :is_delete, :user_id, sysdate, sysdate) RETURNING id into id, created_at into created_at, updated_at into updated_at `
+func (s *orcl) create(m *ListAttendance) error {
+	const osqlInsert = `INSERT INTO entity.ListAttendance (id_user, id_event, is_disable, is_delete, user_id, created_at, updated_at)  VALUES (:id_user, :id_event, :is_disable, :is_delete, :user_id, sysdate, sysdate) RETURNING id into id, created_at into created_at, updated_at into updated_at `
 	stmt, err := s.DB.Prepare(osqlInsert)
 	if err != nil {
 		return err
 	}
 	defer stmt.Close()
 	err = stmt.QueryRow(
-		m.IdUser,
-		m.IdEvent,
-		m.IsDisable,
 		m.IsDelete,
-		m.UserId,
 	).Scan(&m.ID, &m.CreatedAt, &m.UpdatedAt)
 	if err != nil {
 		return err
@@ -46,10 +42,10 @@ func (s *orcl) create(m *Attendance) error {
 }
 
 // Update actualiza un registro en la BD
-func (s *orcl) update(m *Attendance) error {
+func (s *orcl) update(m *ListAttendance) error {
 	date := time.Now()
 	m.UpdatedAt = date
-	const osqlUpdate = `UPDATE entity.attendance SET id_user = :id_user, id_event = :id_event, is_disable = :is_disable, is_delete = :is_delete, user_id = :user_id, updated_at = :updated_at WHERE id = :id  `
+	const osqlUpdate = `UPDATE entity.ListAttendance SET id_user = :id_user, id_event = :id_event, is_disable = :is_disable, is_delete = :is_delete, user_id = :user_id, updated_at = :updated_at WHERE id = :id  `
 	rs, err := s.DB.NamedExec(osqlUpdate, &m)
 	if err != nil {
 		return err
@@ -62,8 +58,8 @@ func (s *orcl) update(m *Attendance) error {
 
 // Delete elimina un registro de la BD
 func (s *orcl) delete(id int) error {
-	const osqlDelete = `DELETE FROM entity.attendance WHERE id = :id `
-	m := Attendance{ID: id}
+	const osqlDelete = `DELETE FROM entity.ListAttendance WHERE id = :id `
+	m := ListAttendance{ID: id}
 	rs, err := s.DB.NamedExec(osqlDelete, &m)
 	if err != nil {
 		return err
@@ -75,9 +71,9 @@ func (s *orcl) delete(id int) error {
 }
 
 // GetByID consulta un registro por su ID
-func (s *orcl) getByID(id int) (*Attendance, error) {
-	const osqlGetByID = `SELECT id , id_user, id_event, is_disable, is_delete, user_id, created_at, updated_at FROM entity.attendance WHERE id = :1 `
-	mdl := Attendance{}
+func (s *orcl) getByID(id int) (*ListAttendance, error) {
+	const osqlGetByID = `SELECT id , id_user, id_event, is_disable, is_delete, user_id, created_at, updated_at FROM entity.ListAttendance WHERE id = :1 `
+	mdl := ListAttendance{}
 	err := s.DB.Get(&mdl, osqlGetByID, id)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -89,9 +85,9 @@ func (s *orcl) getByID(id int) (*Attendance, error) {
 }
 
 // GetAll consulta todos los registros de la BD
-func (s *orcl) getAll() ([]*Attendance, error) {
-	var ms []*Attendance
-	const osqlGetAll = ` SELECT id , id_user, id_event, is_disable, is_delete, user_id, created_at, updated_at FROM entity.attendance `
+func (s *orcl) getAll() ([]*ListAttendance, error) {
+	var ms []*ListAttendance
+	const osqlGetAll = ` SELECT id , id_user, id_event, is_disable, is_delete, user_id, created_at, updated_at FROM entity.ListAttendance `
 
 	err := s.DB.Select(&ms, osqlGetAll)
 	if err != nil {
@@ -101,4 +97,22 @@ func (s *orcl) getAll() ([]*Attendance, error) {
 		return ms, err
 	}
 	return ms, nil
+}
+
+func (s *orcl) getListAttendanceUser() ([]*ListAttendance, error) {
+	userId := s.user.ID
+	const sqlGetByID = `SELECT ev.description, ae.is_delete, us.names, ae.created_at, ae.updated_at
+FROM [entity].[attendance_event_users]   ae
+join [cfg].[events] ev on ev.id = ae.id_event 
+join auth.users us on us.id = ae.user_id
+WHERE id_user = @id_user `
+	var mdl []*ListAttendance
+	err := s.DB.Select(&mdl, sqlGetByID, sql.Named("id_user", userId))
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return mdl, err
+	}
+	return mdl, nil
 }
