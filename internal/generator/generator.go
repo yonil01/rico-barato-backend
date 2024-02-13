@@ -1,9 +1,9 @@
 package generator
 
 import (
-	"backend-ccff/internal/env"
-	"backend-ccff/internal/logger"
-	"backend-ccff/pkg/indra/upload_metadata"
+	"backend-comee/internal/env"
+	"backend-comee/internal/logger"
+	"backend-comee/pkg/indra/upload_metadata"
 	"fmt"
 	"github.com/xuri/excelize/v2"
 	"os"

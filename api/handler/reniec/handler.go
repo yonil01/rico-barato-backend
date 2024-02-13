@@ -1,10 +1,10 @@
 package reniec
 
 import (
-	"backend-ccff/internal/logger"
-	"backend-ccff/internal/models"
-	"backend-ccff/internal/msgs"
-	"backend-ccff/pkg/reniec"
+	"backend-comee/internal/logger"
+	"backend-comee/internal/models"
+	"backend-comee/internal/msgs"
+	"backend-comee/pkg/reniec"
 	"github.com/gofiber/fiber/v2"
 	"github.com/jmoiron/sqlx"
 	"net/http"

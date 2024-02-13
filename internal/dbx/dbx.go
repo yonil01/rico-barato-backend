@@ -1,8 +1,8 @@
 package dbx
 
 import (
-	"backend-ccff/internal/env"
-	"backend-ccff/internal/logger"
+	"backend-comee/internal/env"
+	"backend-comee/internal/logger"
 	"fmt"
 	_ "github.com/denisenkom/go-mssqldb"
 	_ "github.com/go-sql-driver/mysql"

@@ -1,7 +1,7 @@
 package env
 
 import (
-	"backend-ccff/internal/ciphers"
+	"backend-comee/internal/ciphers"
 	"encoding/json"
 	"io/ioutil"
 	"log"

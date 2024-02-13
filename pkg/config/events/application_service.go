@@ -1,8 +1,8 @@
 package events
 
 import (
-	"backend-ccff/internal/logger"
-	"backend-ccff/internal/models"
+	"backend-comee/internal/logger"
+	"backend-comee/internal/models"
 	"fmt"
 	"time"
 

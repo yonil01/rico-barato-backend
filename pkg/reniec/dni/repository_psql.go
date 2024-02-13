@@ -1,7 +1,7 @@
 package dni
 
 import (
-	"backend-ccff/internal/models"
+	"backend-comee/internal/models"
 	"github.com/jmoiron/sqlx"
 )
 

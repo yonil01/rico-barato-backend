@@ -1,28 +1,27 @@
-package events
+package user_entity
 
 import (
-	"backend-ccff/internal/logger"
-	"backend-ccff/internal/middleware"
-	"backend-ccff/internal/models"
-	"backend-ccff/internal/msgs"
-	"backend-ccff/pkg/config"
+	"backend-comee/internal/logger"
+	"backend-comee/internal/models"
+	"backend-comee/internal/msgs"
+	"backend-comee/pkg/auth"
 	"github.com/gofiber/fiber/v2"
 	"github.com/jmoiron/sqlx"
 	"net/http"
 )
 
-type handlerEvents struct {
+type handlerInfoBasicPersons struct {
 	dB   *sqlx.DB
 	user *models.User
 	txID string
 }
 
-func (h *handlerEvents) GetEvents(c *fiber.Ctx) error {
+func (h *handlerInfoBasicPersons) GetUserEntity(c *fiber.Ctx) error {
 	msg := msgs.Model{}
-	res := ResponseAllEvent{Error: true}
-	srvConfig := config.NewServerConfig(h.dB, h.user, h.txID)
+	res := ResponseAllInfoBasicPerson{Error: true}
+	srvAuth := auth.NewServerAuth(h.dB, h.user, h.txID)
 
-	req, err := srvConfig.Event.GetAllEvents()
+	req, err := srvAuth.UserEntity.GetAllUserEntity()
 	if err != nil {
 		logger.Error.Printf("Couldn't insert suffragers: %v", err)
 		res.Code, res.Type, res.Msg = msg.GetByCode(99)
@@ -35,13 +34,13 @@ func (h *handlerEvents) GetEvents(c *fiber.Ctx) error {
 	return c.Status(http.StatusOK).JSON(res)
 }
 
-func (h *handlerEvents) CreateEvent(c *fiber.Ctx) error {
+func (h *handlerInfoBasicPersons) CreateUserEntity(c *fiber.Ctx) error {
 	msg := msgs.Model{}
-	res := ResponseEvent{Error: true}
-	srvConfig := config.NewServerConfig(h.dB, h.user, h.txID)
-	rqEvent := RequestEvent{}
+	res := ResponseInfoBasicPerson{Error: true}
+	srvAuth := auth.NewServerAuth(h.dB, h.user, h.txID)
+	req := RequestUserEntity{}
 
-	err := c.BodyParser(&rqEvent)
+	err := c.BodyParser(&req)
 	if err != nil {
 		logger.Error.Printf("couldn't bind model BodyParser: %v", err)
 		res.Code, res.Type, res.Msg = msg.GetByCode(1)
@@ -49,22 +48,22 @@ func (h *handlerEvents) CreateEvent(c *fiber.Ctx) error {
 		return c.Status(http.StatusAccepted).JSON(res)
 	}
 
-	usr, err := middleware.GetUser(c)
+	/*usr, err := middleware.GetUser(c)
 	if err != nil {
 		res.Error = true
 		res.Code = 99
 		res.Msg = "Error in token"
 		return c.Status(http.StatusOK).JSON(res)
-	}
+	}*/
 
-	req, cod, err := srvConfig.Event.CreateEvents(rqEvent.Id, rqEvent.Name, rqEvent.Description, rqEvent.EventDate, 0, 0, usr.ID)
+	resData, cod, err := srvAuth.UserEntity.CreateUserEntity(req.Id, req.Dni, req.Name, req.Lastname, req.Email, 0, 0, "33ac98cd-cac7-4eb7-8efe-d0e5264b4fd2")
 	if err != nil {
 		logger.Error.Printf("Couldn't insert suffragers: %v", err)
 		res.Code, res.Type, res.Msg = msg.GetByCode(cod)
 		return c.Status(http.StatusAccepted).JSON(res)
 	}
 
-	res.Data = req
+	res.Data = resData
 	res.Error = false
 
 	return c.Status(http.StatusOK).JSON(res)

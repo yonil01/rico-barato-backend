@@ -1,7 +1,7 @@
 package report
 
 import (
-	"backend-ccff/pkg/config/events"
+	"backend-comee/pkg/config/events"
 )
 
 type RequestReport struct {

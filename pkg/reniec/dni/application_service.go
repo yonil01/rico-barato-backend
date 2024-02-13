@@ -1,10 +1,10 @@
 package dni
 
 import (
-	"backend-ccff/internal/env"
-	"backend-ccff/internal/logger"
-	"backend-ccff/internal/models"
-	"backend-ccff/internal/ws"
+	"backend-comee/internal/env"
+	"backend-comee/internal/logger"
+	"backend-comee/internal/models"
+	"backend-comee/internal/ws"
 	"encoding/json"
 	"fmt"
 )

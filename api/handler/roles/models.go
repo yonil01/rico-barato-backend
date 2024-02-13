@@ -1,8 +1,8 @@
 package Roles
 
 import (
-	"backend-ccff/pkg/auth/roles"
-	"backend-ccff/pkg/config/role_user"
+	"backend-comee/pkg/auth/roles"
+	"backend-comee/pkg/config/role_user"
 )
 
 type RequestRoles struct {

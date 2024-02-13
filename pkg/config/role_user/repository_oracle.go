@@ -1,7 +1,7 @@
 package role_user
 
 import (
-	"backend-ccff/internal/models"
+	"backend-comee/internal/models"
 	"database/sql"
 	"fmt"
 	"time"

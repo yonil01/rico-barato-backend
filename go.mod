@@ -1,4 +1,4 @@
-module backend-ccff
+module backend-comee
 
 go 1.18
 

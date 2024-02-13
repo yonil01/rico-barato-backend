@@ -1,6 +1,6 @@
 package api
 
-import "backend-ccff/internal/dbx"
+import "backend-comee/internal/dbx"
 
 func Start(port int, app string, loggerHttp bool, allowedOrigins string) {
 

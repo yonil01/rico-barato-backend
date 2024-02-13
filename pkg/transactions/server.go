@@ -1,8 +1,8 @@
 package report
 
 import (
-	"backend-ccff/internal/models"
-	"backend-ccff/pkg/transactions/report"
+	"backend-comee/internal/models"
+	"backend-comee/pkg/transactions/report"
 	"github.com/jmoiron/sqlx"
 )
 

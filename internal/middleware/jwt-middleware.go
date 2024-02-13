@@ -1,9 +1,9 @@
 package middleware
 
 import (
-	"backend-ccff/internal/env"
-	"backend-ccff/internal/logger"
-	"backend-ccff/internal/models"
+	"backend-comee/internal/env"
+	"backend-comee/internal/logger"
+	"backend-comee/internal/models"
 	"crypto/rsa"
 	"fmt"
 	"github.com/form3tech-oss/jwt-go"

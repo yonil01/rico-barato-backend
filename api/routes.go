@@ -1,13 +1,16 @@
 package api
 
 import (
-	"backend-ccff/api/handler/attendance"
-	"backend-ccff/api/handler/events"
-	"backend-ccff/api/handler/modules"
-	"backend-ccff/api/handler/reniec"
-	"backend-ccff/api/handler/report"
-	Roles "backend-ccff/api/handler/roles"
-	"backend-ccff/api/handler/users"
+	InfoBasicEntity "backend-comee/api/handler/entity"
+	"backend-comee/api/handler/files"
+	"backend-comee/api/handler/food"
+	"backend-comee/api/handler/modules"
+	"backend-comee/api/handler/reniec"
+	"backend-comee/api/handler/report"
+	Roles "backend-comee/api/handler/roles"
+	"backend-comee/api/handler/user_entity"
+	"backend-comee/api/handler/user_information_personal"
+	"backend-comee/api/handler/users"
 	"github.com/ansrivas/fiberprometheus/v2"
 	swagger "github.com/arsmn/fiber-swagger/v2"
 	"github.com/gofiber/fiber/v2"
@@ -54,9 +57,12 @@ func routes(db *sqlx.DB, loggerHttp bool, allowedOrigins string) *fiber.App {
 	reniec.RouterReniec(app, db, TxID)
 	users.RouterUsers(app, db, TxID)
 	modules.RouterModules(app, db, TxID)
-	events.RouterEvents(app, db, TxID)
 	report.RouterReport(app, db, TxID)
-	attendance.RouterAttendance(app, db, TxID)
 	Roles.RouterRoles(app, db, TxID)
+	InfoBasicEntity.RouterEntities(app, db, TxID)
+	user_entity.RouterUserEntity(app, db, TxID)
+	user_information_personal.RouterUserInformationPersonal(app, db, TxID)
+	files.RouterFiles(app, db, TxID)
+	food.RouterFood(app, db, TxID)
 	return app
 }

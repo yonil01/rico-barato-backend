@@ -1,8 +1,8 @@
 package reniec
 
 import (
-	"backend-ccff/internal/models"
-	"backend-ccff/pkg/reniec/dni"
+	"backend-comee/internal/models"
+	"backend-comee/pkg/reniec/dni"
 	"github.com/jmoiron/sqlx"
 )
 

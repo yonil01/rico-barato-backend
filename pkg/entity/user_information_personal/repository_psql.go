@@ -1,11 +1,11 @@
-package attendance
+package user_information_personal
 
 import (
-	"backend-ccff/internal/models"
 	"database/sql"
 	"fmt"
 	"time"
 
+	"backend-comee/internal/models"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -16,7 +16,7 @@ type psql struct {
 	TxID string
 }
 
-func newAttendancePsqlRepository(db *sqlx.DB, user *models.User, txID string) *psql {
+func newUserInformationPersonalPsqlRepository(db *sqlx.DB, user *models.User, txID string) *psql {
 	return &psql{
 		DB:   db,
 		user: user,
@@ -25,20 +25,18 @@ func newAttendancePsqlRepository(db *sqlx.DB, user *models.User, txID string) *p
 }
 
 // Create registra en la BD
-func (s *psql) create(m *Attendance) error {
+func (s *psql) create(m *UserInformationPersonal) error {
 
-	const psqlInsert = `INSERT INTO entity.attendance (id_user, id_event, is_disable, is_delete, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING id, created_at, updated_at`
+	const psqlInsert = `INSERT INTO entity.user_information_personal (user_id, gender, age) VALUES ($1, $2, $3) RETURNING id, created_at, updated_at`
 	stmt, err := s.DB.Prepare(psqlInsert)
 	if err != nil {
 		return err
 	}
 	defer stmt.Close()
 	err = stmt.QueryRow(
-		m.IdUser,
-		m.IdEvent,
-		m.IsDisable,
-		m.IsDelete,
 		m.UserId,
+		m.Gender,
+		m.Age,
 	).Scan(&m.ID, &m.CreatedAt, &m.UpdatedAt)
 	if err != nil {
 		return err
@@ -48,38 +46,38 @@ func (s *psql) create(m *Attendance) error {
 }
 
 // Update actualiza un registro en la BD
-func (s *psql) update(m *Attendance) error {
+func (s *psql) update(m *UserInformationPersonal) error {
 	date := time.Now()
 	m.UpdatedAt = date
-	const psqlUpdate = `UPDATE entity.attendance SET id_user = :id_user, id_event = :id_event, is_disable = :is_disable, is_delete = :is_delete, user_id = :user_id, updated_at = :updated_at WHERE id = :id `
+	const psqlUpdate = `UPDATE entity.user_information_personal SET user_id = :user_id, gender = :gender, age = :age, updated_at = :updated_at WHERE id = :id `
 	rs, err := s.DB.NamedExec(psqlUpdate, &m)
 	if err != nil {
 		return err
 	}
 	if i, _ := rs.RowsAffected(); i == 0 {
-		return fmt.Errorf("Dev-cff:108")
+		return fmt.Errorf("ecatch:108")
 	}
 	return nil
 }
 
 // Delete elimina un registro de la BD
 func (s *psql) delete(id int) error {
-	const psqlDelete = `DELETE FROM entity.attendance WHERE id = :id `
-	m := Attendance{ID: id}
+	const psqlDelete = `DELETE FROM entity.user_information_personal WHERE id = :id `
+	m := UserInformationPersonal{ID: id}
 	rs, err := s.DB.NamedExec(psqlDelete, &m)
 	if err != nil {
 		return err
 	}
 	if i, _ := rs.RowsAffected(); i == 0 {
-		return fmt.Errorf("Dev-cff:108")
+		return fmt.Errorf("ecatch:108")
 	}
 	return nil
 }
 
 // GetByID consulta un registro por su ID
-func (s *psql) getByID(id int) (*Attendance, error) {
-	const psqlGetByID = `SELECT id , id_user, id_event, is_disable, is_delete, user_id, created_at, updated_at FROM entity.attendance WHERE id = $1 `
-	mdl := Attendance{}
+func (s *psql) getByID(id int) (*UserInformationPersonal, error) {
+	const psqlGetByID = `SELECT id , user_id, gender, age, created_at, updated_at FROM entity.user_information_personal WHERE id = $1 `
+	mdl := UserInformationPersonal{}
 	err := s.DB.Get(&mdl, psqlGetByID, id)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -91,9 +89,9 @@ func (s *psql) getByID(id int) (*Attendance, error) {
 }
 
 // GetAll consulta todos los registros de la BD
-func (s *psql) getAll() ([]*Attendance, error) {
-	var ms []*Attendance
-	const psqlGetAll = ` SELECT id , id_user, id_event, is_disable, is_delete, user_id, created_at, updated_at FROM entity.attendance `
+func (s *psql) getAll() ([]*UserInformationPersonal, error) {
+	var ms []*UserInformationPersonal
+	const psqlGetAll = ` SELECT id , user_id, gender, age, created_at, updated_at FROM entity.user_information_personal `
 
 	err := s.DB.Select(&ms, psqlGetAll)
 	if err != nil {

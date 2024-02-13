@@ -1,6 +1,6 @@
 package modules
 
-import "backend-ccff/pkg/auth/modules"
+import "backend-comee/pkg/auth/modules"
 
 type RequestModulesUser struct {
 	Ids  []string `json:"ids"`

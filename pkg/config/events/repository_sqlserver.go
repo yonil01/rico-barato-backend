@@ -1,7 +1,7 @@
 package events
 
 import (
-	"backend-ccff/internal/models"
+	"backend-comee/internal/models"
 	"database/sql"
 	"fmt"
 	"time"

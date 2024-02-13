@@ -1,8 +1,8 @@
 package role_user
 
 import (
-	"backend-ccff/internal/logger"
-	"backend-ccff/internal/models"
+	"backend-comee/internal/logger"
+	"backend-comee/internal/models"
 	"github.com/jmoiron/sqlx"
 )
 

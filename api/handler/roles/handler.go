@@ -1,12 +1,12 @@
 package Roles
 
 import (
-	"backend-ccff/internal/logger"
-	"backend-ccff/internal/middleware"
-	"backend-ccff/internal/models"
-	"backend-ccff/internal/msgs"
-	"backend-ccff/pkg/auth"
-	"backend-ccff/pkg/config"
+	"backend-comee/internal/logger"
+	"backend-comee/internal/middleware"
+	"backend-comee/internal/models"
+	"backend-comee/internal/msgs"
+	"backend-comee/pkg/auth"
+	"backend-comee/pkg/config"
 	"github.com/gofiber/fiber/v2"
 	"github.com/jmoiron/sqlx"
 	"net/http"

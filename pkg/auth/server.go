@@ -1,26 +1,30 @@
 package auth
 
 import (
-	"backend-ccff/internal/models"
-	"backend-ccff/pkg/auth/modules"
-	"backend-ccff/pkg/auth/roles"
-	"backend-ccff/pkg/auth/users"
+	"backend-comee/internal/models"
+	"backend-comee/pkg/auth/modules"
+	"backend-comee/pkg/auth/roles"
+	"backend-comee/pkg/auth/user_entity"
+	"backend-comee/pkg/auth/users"
 	"github.com/jmoiron/sqlx"
 )
 
 type ServerAuth struct {
-	Users   users.PortsServerUsers
-	Modules modules.PortModules
-	Roles   roles.PortRoles
+	Users      users.PortsServerUser
+	Modules    modules.PortModules
+	Roles      roles.PortRoles
+	UserEntity user_entity.PortsServerUserEntity
 }
 
 func NewServerAuth(db *sqlx.DB, user *models.User, txID string) *ServerAuth {
 	repoDni := users.FactoryStorage(db, user, txID)
 	repoModules := modules.FactoryStorage(db, user, txID)
 	repoRoles := roles.FactoryStorage(db, user, txID)
+	repoUserEntity := user_entity.FactoryStorage(db, user, txID)
 	return &ServerAuth{
-		Users:   users.NewUsersService(repoDni, user, txID),
-		Modules: modules.NewModuleService(repoModules, user, txID),
-		Roles:   roles.NewRoleService(repoRoles, user, txID),
+		Users:      users.NewUserService(repoDni, user, txID),
+		Modules:    modules.NewModuleService(repoModules, user, txID),
+		Roles:      roles.NewRoleService(repoRoles, user, txID),
+		UserEntity: user_entity.NewUserEntityService(repoUserEntity, user, txID),
 	}
 }

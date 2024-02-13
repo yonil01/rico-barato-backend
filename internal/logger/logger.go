@@ -1,7 +1,7 @@
 package logger
 
 import (
-	"backend-ccff/internal/env"
+	"backend-comee/internal/env"
 	"fmt"
 	"io/ioutil"
 	"log"

@@ -1,6 +1,6 @@
 package reniec
 
-import "backend-ccff/pkg/reniec/dni"
+import "backend-comee/pkg/reniec/dni"
 
 type RequestReniec struct {
 	Dni string `json:"dni"`

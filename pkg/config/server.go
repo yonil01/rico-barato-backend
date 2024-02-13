@@ -1,9 +1,9 @@
 package config
 
 import (
-	"backend-ccff/internal/models"
-	"backend-ccff/pkg/config/events"
-	"backend-ccff/pkg/config/role_user"
+	"backend-comee/internal/models"
+	"backend-comee/pkg/config/events"
+	"backend-comee/pkg/config/role_user"
 	"github.com/jmoiron/sqlx"
 )
 

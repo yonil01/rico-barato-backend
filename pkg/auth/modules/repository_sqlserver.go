@@ -1,9 +1,9 @@
 package modules
 
 import (
-	"backend-ccff/internal/helper"
-	"backend-ccff/internal/logger"
-	"backend-ccff/internal/models"
+	"backend-comee/internal/helper"
+	"backend-comee/internal/logger"
+	"backend-comee/internal/models"
 	"database/sql"
 	"fmt"
 	"time"

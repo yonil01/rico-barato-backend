@@ -1,11 +1,11 @@
 package modules
 
 import (
-	"backend-ccff/internal/logger"
-	"backend-ccff/internal/middleware"
-	"backend-ccff/internal/models"
-	"backend-ccff/internal/msgs"
-	"backend-ccff/pkg/auth"
+	"backend-comee/internal/logger"
+	"backend-comee/internal/middleware"
+	"backend-comee/internal/models"
+	"backend-comee/internal/msgs"
+	"backend-comee/pkg/auth"
 	"github.com/gofiber/fiber/v2"
 	"github.com/jmoiron/sqlx"
 	"net/http"

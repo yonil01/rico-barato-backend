@@ -1,10 +1,10 @@
 package users
 
 import (
-	"backend-ccff/internal/logger"
-	"backend-ccff/internal/models"
-	"backend-ccff/internal/msgs"
-	"backend-ccff/pkg/auth"
+	"backend-comee/internal/logger"
+	"backend-comee/internal/models"
+	"backend-comee/internal/msgs"
+	"backend-comee/pkg/auth"
 	"github.com/gofiber/fiber/v2"
 	"github.com/jmoiron/sqlx"
 	"net/http"
@@ -30,7 +30,7 @@ func (h *handlerUsers) CreateUser(c *fiber.Ctx) error {
 		return c.Status(http.StatusAccepted).JSON(res)
 	}
 
-	req, cod, err := srvUsers.Users.CreateUsers(rqUsers.Id, rqUsers.Username, rqUsers.CodeStudent, rqUsers.Dni, rqUsers.Names, rqUsers.LastnameFather, rqUsers.LastnameMother, rqUsers.Email, rqUsers.Password, 0, 0)
+	req, cod, err := srvUsers.Users.CreateUser(rqUsers.Id, rqUsers.Ip, 0, 0)
 	if err != nil {
 		logger.Error.Printf("Couldn't insert suffragers: %v", err)
 		res.Code, res.Type, res.Msg = msg.GetByCode(cod)
@@ -48,7 +48,7 @@ func (h *handlerUsers) GetUsers(c *fiber.Ctx) error {
 	res := ResponseUsersAll{Error: true}
 	srvUsers := auth.NewServerAuth(h.dB, h.user, h.txID)
 
-	req, err := srvUsers.Users.GetAllUsers()
+	req, err := srvUsers.Users.GetAllUser()
 	if err != nil {
 		logger.Error.Printf("Couldn't insert suffragers: %v", err)
 		res.Code, res.Type, res.Msg = msg.GetByCode(99)
@@ -68,7 +68,7 @@ func (h *handlerUsers) DeleteUser(c *fiber.Ctx) error {
 
 	id := c.Params("id")
 
-	cod, err := srvUsers.Users.DeleteUsers(id)
+	cod, err := srvUsers.Users.DeleteUser(id)
 	if err != nil {
 		logger.Error.Printf("Couldn't insert suffragers: %v", err)
 		res.Code, res.Type, res.Msg = msg.GetByCode(cod)
@@ -88,7 +88,7 @@ func (h *handlerUsers) GetUserById(c *fiber.Ctx) error {
 
 	id := c.Params("id")
 
-	usr, cod, err := srvUsers.Users.GetUsersByID(id)
+	usr, cod, err := srvUsers.Users.GetUserByID(id)
 	if err != nil {
 		logger.Error.Printf("Couldn't insert suffragers: %v", err)
 		res.Code, res.Type, res.Msg = msg.GetByCode(cod)

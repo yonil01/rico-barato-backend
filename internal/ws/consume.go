@@ -1,7 +1,7 @@
 package ws
 
 import (
-	"backend-ccff/internal/logger"
+	"backend-comee/internal/logger"
 	"bytes"
 	"io"
 	"io/ioutil"

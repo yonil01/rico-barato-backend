@@ -1,7 +1,7 @@
 package helper
 
 import (
-	"backend-ccff/internal/logger"
+	"backend-comee/internal/logger"
 	"encoding/json"
 	"fmt"
 	"strings"
