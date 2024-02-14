@@ -1,4 +1,4 @@
-package roles
+package users_role
 
 import (
 	"time"
@@ -6,24 +6,24 @@ import (
 	"github.com/asaskevich/govalidator"
 )
 
-// Roles  Model struct Roles
-type Roles struct {
+// UsersRole  Model struct UsersRole
+type UsersRole struct {
 	ID        string    `json:"id" db:"id" valid:"required,uuid"`
-	Name      string    `json:"name" db:"name" valid:"required"`
 	UserId    string    `json:"user_id" db:"user_id" valid:"required"`
+	RoleId    string    `json:"role_id" db:"role_id" valid:"required"`
 	CreatedAt time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
 }
 
-func NewRoles(id string, name string, userId string) *Roles {
-	return &Roles{
+func NewUsersRole(id string, userId string, roleId string) *UsersRole {
+	return &UsersRole{
 		ID:     id,
-		Name:   name,
 		UserId: userId,
+		RoleId: roleId,
 	}
 }
 
-func (m *Roles) valid() (bool, error) {
+func (m *UsersRole) valid() (bool, error) {
 	result, err := govalidator.ValidateStruct(m)
 	if err != nil {
 		return result, err

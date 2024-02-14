@@ -16,19 +16,19 @@ type RequestRoleName struct {
 }
 
 type ResponseAllRoles struct {
-	Error bool          `json:"error"`
-	Data  []*roles.Role `json:"data"`
-	Code  int           `json:"code"`
-	Type  string        `json:"type"`
-	Msg   string        `json:"msg"`
+	Error bool           `json:"error"`
+	Data  []*roles.Roles `json:"data"`
+	Code  int            `json:"code"`
+	Type  string         `json:"type"`
+	Msg   string         `json:"msg"`
 }
 
 type ResponseRoles struct {
-	Error bool        `json:"error"`
-	Data  *roles.Role `json:"data"`
-	Code  int         `json:"code"`
-	Type  string      `json:"type"`
-	Msg   string      `json:"msg"`
+	Error bool         `json:"error"`
+	Data  *roles.Roles `json:"data"`
+	Code  int          `json:"code"`
+	Type  string       `json:"type"`
+	Msg   string       `json:"msg"`
 }
 
 type RequestRoleUser struct {

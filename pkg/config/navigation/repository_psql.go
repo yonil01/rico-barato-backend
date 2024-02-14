@@ -1,9 +1,8 @@
-package roles
+package navigation
 
 import (
 	"database/sql"
 	"fmt"
-	"time"
 
 	"backend-comee/internal/models"
 	"github.com/jmoiron/sqlx"
@@ -16,7 +15,7 @@ type psql struct {
 	TxID string
 }
 
-func newRolesPsqlRepository(db *sqlx.DB, user *models.User, txID string) *psql {
+func newNavigationPsqlRepository(db *sqlx.DB, user *models.User, txID string) *psql {
 	return &psql{
 		DB:   db,
 		user: user,
@@ -25,11 +24,11 @@ func newRolesPsqlRepository(db *sqlx.DB, user *models.User, txID string) *psql {
 }
 
 // Create registra en la BD
-func (s *psql) create(m *Roles) error {
+func (s *psql) create(m *Navigation) error {
 	date := time.Now()
 	m.UpdatedAt = date
 	m.CreatedAt = date
-	const psqlInsert = `INSERT INTO auth.roles (id ,name, user_id, created_at, updated_at) VALUES (:id ,:name, :user_id,:created_at, :updated_at) `
+	const psqlInsert = `INSERT INTO cfg.navigation (id ,name, description, user_id, created_at, updated_at) VALUES (:id ,:name, :description, :user_id,:created_at, :updated_at) `
 	rs, err := s.DB.NamedExec(psqlInsert, &m)
 	if err != nil {
 		return err
@@ -41,10 +40,10 @@ func (s *psql) create(m *Roles) error {
 }
 
 // Update actualiza un registro en la BD
-func (s *psql) update(m *Roles) error {
+func (s *psql) update(m *Navigation) error {
 	date := time.Now()
 	m.UpdatedAt = date
-	const psqlUpdate = `UPDATE auth.roles SET name = :name, user_id = :user_id, updated_at = :updated_at WHERE id = :id `
+	const psqlUpdate = `UPDATE cfg.navigation SET name = :name, description = :description, user_id = :user_id, updated_at = :updated_at WHERE id = :id `
 	rs, err := s.DB.NamedExec(psqlUpdate, &m)
 	if err != nil {
 		return err
@@ -57,8 +56,8 @@ func (s *psql) update(m *Roles) error {
 
 // Delete elimina un registro de la BD
 func (s *psql) delete(id string) error {
-	const psqlDelete = `DELETE FROM auth.roles WHERE id = :id `
-	m := Roles{ID: id}
+	const psqlDelete = `DELETE FROM cfg.navigation WHERE id = :id `
+	m := Navigation{ID: id}
 	rs, err := s.DB.NamedExec(psqlDelete, &m)
 	if err != nil {
 		return err
@@ -70,9 +69,9 @@ func (s *psql) delete(id string) error {
 }
 
 // GetByID consulta un registro por su ID
-func (s *psql) getByID(id string) (*Roles, error) {
-	const psqlGetByID = `SELECT id , name, user_id, created_at, updated_at FROM auth.roles WHERE id = $1 `
-	mdl := Roles{}
+func (s *psql) getByID(id string) (*Navigation, error) {
+	const psqlGetByID = `SELECT id , name, description, user_id, created_at, updated_at FROM cfg.navigation WHERE id = $1 `
+	mdl := Navigation{}
 	err := s.DB.Get(&mdl, psqlGetByID, id)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -84,9 +83,9 @@ func (s *psql) getByID(id string) (*Roles, error) {
 }
 
 // GetAll consulta todos los registros de la BD
-func (s *psql) getAll() ([]*Roles, error) {
-	var ms []*Roles
-	const psqlGetAll = ` SELECT id , name, user_id, created_at, updated_at FROM auth.roles `
+func (s *psql) getAll() ([]*Navigation, error) {
+	var ms []*Navigation
+	const psqlGetAll = ` SELECT id , name, description, user_id, created_at, updated_at FROM cfg.navigation `
 
 	err := s.DB.Select(&ms, psqlGetAll)
 	if err != nil {

@@ -29,7 +29,7 @@ func (s *sqlserver) create(m *UserEntity) error {
 	date := time.Now()
 	m.UpdatedAt = date
 	m.CreatedAt = date
-	const sqlInsert = `INSERT INTO auth.user_entity (id ,dni, name, lastname, email, is_block, is_delete, user_id, created_at, updated_at) VALUES (:id ,:dni, :name, :lastname, :email, :is_block, :is_delete, :user_id:created_at, :updated_at) `
+	const sqlInsert = `INSERT INTO auth.user_entity (id ,dni, name, lastname, email, password, is_block, is_delete, user_id, created_at, updated_at) VALUES (:id ,:dni, :name, :lastname, :email, :password, :is_block, :is_delete, :user_id:created_at, :updated_at) `
 	rs, err := s.DB.NamedExec(sqlInsert, &m)
 	if err != nil {
 		return err
@@ -44,7 +44,7 @@ func (s *sqlserver) create(m *UserEntity) error {
 func (s *sqlserver) update(m *UserEntity) error {
 	date := time.Now()
 	m.UpdatedAt = date
-	const sqlUpdate = `UPDATE auth.user_entity SET dni = :dni, name = :name, lastname = :lastname, email = :email, is_block = :is_block, is_delete = :is_delete, user_id = :user_id, updated_at = :updated_at WHERE id = :id `
+	const sqlUpdate = `UPDATE auth.user_entity SET dni = :dni, name = :name, lastname = :lastname, email = :email, password = :password, is_block = :is_block, is_delete = :is_delete, user_id = :user_id, updated_at = :updated_at WHERE id = :id `
 	rs, err := s.DB.NamedExec(sqlUpdate, &m)
 	if err != nil {
 		return err
@@ -71,7 +71,7 @@ func (s *sqlserver) delete(id string) error {
 
 // GetByID consulta un registro por su ID
 func (s *sqlserver) getByID(id string) (*UserEntity, error) {
-	const sqlGetByID = `SELECT convert(nvarchar(50), id) id , dni, name, lastname, email, is_block, is_delete, user_id, created_at, updated_at FROM auth.user_entity  WITH (NOLOCK)  WHERE id = @id `
+	const sqlGetByID = `SELECT convert(nvarchar(50), id) id , dni, name, lastname, email, password, is_block, is_delete, user_id, created_at, updated_at FROM auth.user_entity  WITH (NOLOCK)  WHERE id = @id `
 	mdl := UserEntity{}
 	err := s.DB.Get(&mdl, sqlGetByID, sql.Named("id", id))
 	if err != nil {
@@ -86,7 +86,7 @@ func (s *sqlserver) getByID(id string) (*UserEntity, error) {
 // GetAll consulta todos los registros de la BD
 func (s *sqlserver) getAll() ([]*UserEntity, error) {
 	var ms []*UserEntity
-	const sqlGetAll = `SELECT convert(nvarchar(50), id) id , dni, name, lastname, email, is_block, is_delete, user_id, created_at, updated_at FROM auth.user_entity  WITH (NOLOCK) `
+	const sqlGetAll = `SELECT convert(nvarchar(50), id) id , dni, name, lastname, email, password, is_block, is_delete, user_id, created_at, updated_at FROM auth.user_entity  WITH (NOLOCK) `
 
 	err := s.DB.Select(&ms, sqlGetAll)
 	if err != nil {

@@ -42,7 +42,7 @@ func (h *handlerRoles) CreateRoles(c *fiber.Ctx) error {
 
 	srvAuth := auth.NewServerAuth(h.dB, usr, h.txID)
 
-	req, cod, err := srvAuth.Roles.CreateRole(rqARoles.Id, rqARoles.Name, rqARoles.Description, 1, true)
+	req, cod, err := srvAuth.Roles.CreateRoles(rqARoles.Id, rqARoles.Name, "")
 	if err != nil {
 		logger.Error.Printf("Couldn't insert CreateRoles: %v", err)
 		res.Code, res.Type, res.Msg = msg.GetByCode(cod)
@@ -79,7 +79,7 @@ func (h *handlerRoles) UpdateRoles(c *fiber.Ctx) error {
 
 	srvAuth := auth.NewServerAuth(h.dB, usr, h.txID)
 
-	req, cod, err := srvAuth.Roles.UpdateRole(rqARoles.Id, rqARoles.Name, rqARoles.Description, 1, true)
+	req, cod, err := srvAuth.Roles.UpdateRoles(rqARoles.Id, rqARoles.Name, "")
 	if err != nil {
 		logger.Error.Printf("Couldn't insert CreateRoles: %v", err)
 		res.Code, res.Type, res.Msg = msg.GetByCode(cod)
@@ -97,7 +97,7 @@ func (h *handlerRoles) GetRoles(c *fiber.Ctx) error {
 	res := ResponseAllRoles{Error: true}
 	srvAuth := auth.NewServerAuth(h.dB, h.user, h.txID)
 
-	req, err := srvAuth.Roles.GetAllRole()
+	req, err := srvAuth.Roles.GetAllRoles()
 	if err != nil {
 		logger.Error.Printf("Couldn't insert suffragers: %v", err)
 		res.Code, res.Type, res.Msg = msg.GetByCode(99)
@@ -123,7 +123,7 @@ func (h *handlerRoles) DeleteRole(c *fiber.Ctx) error {
 	roleId := c.Params("id")
 	srvRole := auth.NewServerAuth(h.dB, usr, h.txID)
 
-	cod, err := srvRole.Roles.DeleteRole(roleId)
+	cod, err := srvRole.Roles.DeleteRoles(roleId)
 	if err != nil {
 		logger.Error.Printf("Couldn't  GetModulesRole: %v", err)
 		res.Code, res.Type, res.Msg = msg.GetByCode(cod)
@@ -148,50 +148,13 @@ func (h *handlerRoles) GetRole(c *fiber.Ctx) error {
 	roleId := c.Params("id")
 	srvRole := auth.NewServerAuth(h.dB, usr, h.txID)
 
-	resp, cod, err := srvRole.Roles.GetRoleByID(roleId)
+	resp, cod, err := srvRole.Roles.GetRolesByID(roleId)
 	if err != nil {
 		logger.Error.Printf("Couldn't  GetModulesRole: %v", err)
 		res.Code, res.Type, res.Msg = msg.GetByCode(cod)
 		return c.Status(http.StatusAccepted).JSON(res)
 	}
 	res.Data = resp
-	res.Error = false
-
-	return c.Status(http.StatusOK).JSON(res)
-}
-
-func (h *handlerRoles) GetRoleByName(c *fiber.Ctx) error {
-	msg := msgs.Model{}
-	res := ResponseRoles{Error: true}
-
-	rqARoles := RequestRoleName{}
-
-	err := c.BodyParser(&rqARoles)
-	if err != nil {
-		logger.Error.Printf("couldn't bind model BodyParser: %v", err)
-		res.Code, res.Type, res.Msg = msg.GetByCode(1)
-		res.Msg = "couldn't bind model RequestMetadata"
-		return c.Status(http.StatusAccepted).JSON(res)
-	}
-
-	usr, err := middleware.GetUser(c)
-	if err != nil {
-		res.Error = true
-		res.Code = 99
-		res.Msg = "Error in token"
-		return c.Status(http.StatusOK).JSON(res)
-	}
-
-	srvAuth := auth.NewServerAuth(h.dB, usr, h.txID)
-
-	req, cod, err := srvAuth.Roles.GetRoleByName(rqARoles.Name)
-	if err != nil {
-		logger.Error.Printf("Couldn't insert GetRoleByName: %v", err)
-		res.Code, res.Type, res.Msg = msg.GetByCode(cod)
-		return c.Status(http.StatusAccepted).JSON(res)
-	}
-
-	res.Data = req
 	res.Error = false
 
 	return c.Status(http.StatusOK).JSON(res)

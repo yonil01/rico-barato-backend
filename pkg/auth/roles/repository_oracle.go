@@ -9,15 +9,15 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-// psql estructura de conexión a la BD de postgresql
-type psql struct {
+// Orcl estructura de conexión a la BD de Oracle
+type orcl struct {
 	DB   *sqlx.DB
 	user *models.User
 	TxID string
 }
 
-func newRolesPsqlRepository(db *sqlx.DB, user *models.User, txID string) *psql {
-	return &psql{
+func newRolesOrclRepository(db *sqlx.DB, user *models.User, txID string) *orcl {
+	return &orcl{
 		DB:   db,
 		user: user,
 		TxID: txID,
@@ -25,12 +25,12 @@ func newRolesPsqlRepository(db *sqlx.DB, user *models.User, txID string) *psql {
 }
 
 // Create registra en la BD
-func (s *psql) create(m *Roles) error {
+func (s *orcl) create(m *Roles) error {
 	date := time.Now()
 	m.UpdatedAt = date
 	m.CreatedAt = date
-	const psqlInsert = `INSERT INTO auth.roles (id ,name, user_id, created_at, updated_at) VALUES (:id ,:name, :user_id,:created_at, :updated_at) `
-	rs, err := s.DB.NamedExec(psqlInsert, &m)
+	const osqlInsert = `INSERT INTO auth.roles (id ,name, user_id, created_at, updated_at)  VALUES (:id ,:name, :user_id,:created_at, :updated_at) `
+	rs, err := s.DB.NamedExec(osqlInsert, &m)
 	if err != nil {
 		return err
 	}
@@ -41,11 +41,11 @@ func (s *psql) create(m *Roles) error {
 }
 
 // Update actualiza un registro en la BD
-func (s *psql) update(m *Roles) error {
+func (s *orcl) update(m *Roles) error {
 	date := time.Now()
 	m.UpdatedAt = date
-	const psqlUpdate = `UPDATE auth.roles SET name = :name, user_id = :user_id, updated_at = :updated_at WHERE id = :id `
-	rs, err := s.DB.NamedExec(psqlUpdate, &m)
+	const osqlUpdate = `UPDATE auth.roles SET name = :name, user_id = :user_id, updated_at = :updated_at WHERE id = :id  `
+	rs, err := s.DB.NamedExec(osqlUpdate, &m)
 	if err != nil {
 		return err
 	}
@@ -56,10 +56,10 @@ func (s *psql) update(m *Roles) error {
 }
 
 // Delete elimina un registro de la BD
-func (s *psql) delete(id string) error {
-	const psqlDelete = `DELETE FROM auth.roles WHERE id = :id `
+func (s *orcl) delete(id string) error {
+	const osqlDelete = `DELETE FROM auth.roles WHERE id = :id `
 	m := Roles{ID: id}
-	rs, err := s.DB.NamedExec(psqlDelete, &m)
+	rs, err := s.DB.NamedExec(osqlDelete, &m)
 	if err != nil {
 		return err
 	}
@@ -70,10 +70,10 @@ func (s *psql) delete(id string) error {
 }
 
 // GetByID consulta un registro por su ID
-func (s *psql) getByID(id string) (*Roles, error) {
-	const psqlGetByID = `SELECT id , name, user_id, created_at, updated_at FROM auth.roles WHERE id = $1 `
+func (s *orcl) getByID(id string) (*Roles, error) {
+	const osqlGetByID = `SELECT id , name, user_id, created_at, updated_at FROM auth.roles WHERE id = :1 `
 	mdl := Roles{}
-	err := s.DB.Get(&mdl, psqlGetByID, id)
+	err := s.DB.Get(&mdl, osqlGetByID, id)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, nil
@@ -84,11 +84,11 @@ func (s *psql) getByID(id string) (*Roles, error) {
 }
 
 // GetAll consulta todos los registros de la BD
-func (s *psql) getAll() ([]*Roles, error) {
+func (s *orcl) getAll() ([]*Roles, error) {
 	var ms []*Roles
-	const psqlGetAll = ` SELECT id , name, user_id, created_at, updated_at FROM auth.roles `
+	const osqlGetAll = ` SELECT id , name, user_id, created_at, updated_at FROM auth.roles `
 
-	err := s.DB.Select(&ms, psqlGetAll)
+	err := s.DB.Select(&ms, osqlGetAll)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, nil

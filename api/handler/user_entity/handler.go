@@ -56,7 +56,34 @@ func (h *handlerInfoBasicPersons) CreateUserEntity(c *fiber.Ctx) error {
 		return c.Status(http.StatusOK).JSON(res)
 	}*/
 
-	resData, cod, err := srvAuth.UserEntity.CreateUserEntity(req.Id, req.Dni, req.Name, req.Lastname, req.Email, 0, 0, "33ac98cd-cac7-4eb7-8efe-d0e5264b4fd2")
+	resData, cod, err := srvAuth.UserEntity.CreateUserEntity(req.Id, req.Dni, req.Name, req.Lastname, req.Email, req.Password, 0, 0, "33ac98cd-cac7-4eb7-8efe-d0e5264b4fd2")
+	if err != nil {
+		logger.Error.Printf("Couldn't insert suffragers: %v", err)
+		res.Code, res.Type, res.Msg = msg.GetByCode(cod)
+		return c.Status(http.StatusAccepted).JSON(res)
+	}
+
+	res.Data = resData
+	res.Error = false
+
+	return c.Status(http.StatusOK).JSON(res)
+}
+
+func (h *handlerInfoBasicPersons) Login(c *fiber.Ctx) error {
+	msg := msgs.Model{}
+	res := ResponseInfoBasicPerson{Error: true}
+	srvAuth := auth.NewServerAuth(h.dB, h.user, h.txID)
+	req := RequestUserEntity{}
+
+	err := c.BodyParser(&req)
+	if err != nil {
+		logger.Error.Printf("couldn't bind model BodyParser: %v", err)
+		res.Code, res.Type, res.Msg = msg.GetByCode(1)
+		res.Msg = "couldn't bind model RequestMetadata"
+		return c.Status(http.StatusAccepted).JSON(res)
+	}
+
+	resData, cod, err := srvAuth.UserEntity.CreateUserEntity(req.Id, req.Dni, req.Name, req.Lastname, req.Email, req.Password, 0, 0, "33ac98cd-cac7-4eb7-8efe-d0e5264b4fd2")
 	if err != nil {
 		logger.Error.Printf("Couldn't insert suffragers: %v", err)
 		res.Code, res.Type, res.Msg = msg.GetByCode(cod)

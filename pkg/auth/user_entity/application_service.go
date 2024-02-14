@@ -9,8 +9,8 @@ import (
 )
 
 type PortsServerUserEntity interface {
-	CreateUserEntity(id string, dni string, name string, lastname string, email string, isBlock int, isDelete int, userId string) (*UserEntity, int, error)
-	UpdateUserEntity(id string, dni string, name string, lastname string, email string, isBlock int, isDelete int, userId string) (*UserEntity, int, error)
+	CreateUserEntity(id string, dni string, name string, lastname string, email string, password string, isBlock int, isDelete int, userId string) (*UserEntity, int, error)
+	UpdateUserEntity(id string, dni string, name string, lastname string, email string, password string, isBlock int, isDelete int, userId string) (*UserEntity, int, error)
 	DeleteUserEntity(id string) (int, error)
 	GetUserEntityByID(id string) (*UserEntity, int, error)
 	GetAllUserEntity() ([]*UserEntity, error)
@@ -26,8 +26,8 @@ func NewUserEntityService(repository ServicesUserEntityRepository, user *models.
 	return &service{repository: repository, user: user, txID: TxID}
 }
 
-func (s *service) CreateUserEntity(id string, dni string, name string, lastname string, email string, isBlock int, isDelete int, userId string) (*UserEntity, int, error) {
-	m := NewUserEntity(id, dni, name, lastname, email, isBlock, isDelete, userId)
+func (s *service) CreateUserEntity(id string, dni string, name string, lastname string, email string, password string, isBlock int, isDelete int, userId string) (*UserEntity, int, error) {
+	m := NewUserEntity(id, dni, name, lastname, email, password, isBlock, isDelete, userId)
 	if valid, err := m.valid(); !valid {
 		logger.Error.Println(s.txID, " - don't meet validations:", err)
 		return m, 15, err
@@ -43,8 +43,8 @@ func (s *service) CreateUserEntity(id string, dni string, name string, lastname 
 	return m, 29, nil
 }
 
-func (s *service) UpdateUserEntity(id string, dni string, name string, lastname string, email string, isBlock int, isDelete int, userId string) (*UserEntity, int, error) {
-	m := NewUserEntity(id, dni, name, lastname, email, isBlock, isDelete, userId)
+func (s *service) UpdateUserEntity(id string, dni string, name string, lastname string, email string, password string, isBlock int, isDelete int, userId string) (*UserEntity, int, error) {
+	m := NewUserEntity(id, dni, name, lastname, email, password, isBlock, isDelete, userId)
 	if valid, err := m.valid(); !valid {
 		logger.Error.Println(s.txID, " - don't meet validations:", err)
 		return m, 15, err

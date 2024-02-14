@@ -1,4 +1,4 @@
-package user_entity
+package roles_navigation
 
 import (
 	"database/sql"
@@ -16,7 +16,7 @@ type orcl struct {
 	TxID string
 }
 
-func newUserEntityOrclRepository(db *sqlx.DB, user *models.User, txID string) *orcl {
+func newRolesNavigationOrclRepository(db *sqlx.DB, user *models.User, txID string) *orcl {
 	return &orcl{
 		DB:   db,
 		user: user,
@@ -25,11 +25,11 @@ func newUserEntityOrclRepository(db *sqlx.DB, user *models.User, txID string) *o
 }
 
 // Create registra en la BD
-func (s *orcl) create(m *UserEntity) error {
+func (s *orcl) create(m *RolesNavigation) error {
 	date := time.Now()
 	m.UpdatedAt = date
 	m.CreatedAt = date
-	const osqlInsert = `INSERT INTO auth.user_entity (id ,dni, name, lastname, email, password, is_block, is_delete, user_id, created_at, updated_at)  VALUES (:id ,:dni, :name, :lastname, :email, :password, :is_block, :is_delete, :user_id,:created_at, :updated_at) `
+	const osqlInsert = `INSERT INTO cfg.roles_navigation (id ,role_id, navigation_id, created_at, updated_at)  VALUES (:id ,:role_id, :navigation_id,:created_at, :updated_at) `
 	rs, err := s.DB.NamedExec(osqlInsert, &m)
 	if err != nil {
 		return err
@@ -41,10 +41,10 @@ func (s *orcl) create(m *UserEntity) error {
 }
 
 // Update actualiza un registro en la BD
-func (s *orcl) update(m *UserEntity) error {
+func (s *orcl) update(m *RolesNavigation) error {
 	date := time.Now()
 	m.UpdatedAt = date
-	const osqlUpdate = `UPDATE auth.user_entity SET dni = :dni, name = :name, lastname = :lastname, email = :email, password = :password, is_block = :is_block, is_delete = :is_delete, user_id = :user_id, updated_at = :updated_at WHERE id = :id  `
+	const osqlUpdate = `UPDATE cfg.roles_navigation SET role_id = :role_id, navigation_id = :navigation_id, updated_at = :updated_at WHERE id = :id  `
 	rs, err := s.DB.NamedExec(osqlUpdate, &m)
 	if err != nil {
 		return err
@@ -57,8 +57,8 @@ func (s *orcl) update(m *UserEntity) error {
 
 // Delete elimina un registro de la BD
 func (s *orcl) delete(id string) error {
-	const osqlDelete = `DELETE FROM auth.user_entity WHERE id = :id `
-	m := UserEntity{ID: id}
+	const osqlDelete = `DELETE FROM cfg.roles_navigation WHERE id = :id `
+	m := RolesNavigation{ID: id}
 	rs, err := s.DB.NamedExec(osqlDelete, &m)
 	if err != nil {
 		return err
@@ -70,9 +70,9 @@ func (s *orcl) delete(id string) error {
 }
 
 // GetByID consulta un registro por su ID
-func (s *orcl) getByID(id string) (*UserEntity, error) {
-	const osqlGetByID = `SELECT id , dni, name, lastname, email, password, is_block, is_delete, user_id, created_at, updated_at FROM auth.user_entity WHERE id = :1 `
-	mdl := UserEntity{}
+func (s *orcl) getByID(id string) (*RolesNavigation, error) {
+	const osqlGetByID = `SELECT id , role_id, navigation_id, created_at, updated_at FROM cfg.roles_navigation WHERE id = :1 `
+	mdl := RolesNavigation{}
 	err := s.DB.Get(&mdl, osqlGetByID, id)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -84,9 +84,9 @@ func (s *orcl) getByID(id string) (*UserEntity, error) {
 }
 
 // GetAll consulta todos los registros de la BD
-func (s *orcl) getAll() ([]*UserEntity, error) {
-	var ms []*UserEntity
-	const osqlGetAll = ` SELECT id , dni, name, lastname, email, password, is_block, is_delete, user_id, created_at, updated_at FROM auth.user_entity `
+func (s *orcl) getAll() ([]*RolesNavigation, error) {
+	var ms []*RolesNavigation
+	const osqlGetAll = ` SELECT id , role_id, navigation_id, created_at, updated_at FROM cfg.roles_navigation `
 
 	err := s.DB.Select(&ms, osqlGetAll)
 	if err != nil {

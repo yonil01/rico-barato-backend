@@ -12,4 +12,5 @@ func RouterUserEntity(app *fiber.App, db *sqlx.DB, txID string) {
 	getWork := v1.Group("/user-entity")
 	getWork.Get("", h.GetUserEntity)
 	getWork.Post("create", h.CreateUserEntity)
+	getWork.Post("login", h.Login)
 }

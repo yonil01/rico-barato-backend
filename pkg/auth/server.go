@@ -12,7 +12,7 @@ import (
 type ServerAuth struct {
 	Users      users.PortsServerUser
 	Modules    modules.PortModules
-	Roles      roles.PortRoles
+	Roles      roles.PortsServerRoles
 	UserEntity user_entity.PortsServerUserEntity
 }
 
@@ -24,7 +24,7 @@ func NewServerAuth(db *sqlx.DB, user *models.User, txID string) *ServerAuth {
 	return &ServerAuth{
 		Users:      users.NewUserService(repoDni, user, txID),
 		Modules:    modules.NewModuleService(repoModules, user, txID),
-		Roles:      roles.NewRoleService(repoRoles, user, txID),
+		Roles:      roles.NewRolesService(repoRoles, user, txID),
 		UserEntity: user_entity.NewUserEntityService(repoUserEntity, user, txID),
 	}
 }

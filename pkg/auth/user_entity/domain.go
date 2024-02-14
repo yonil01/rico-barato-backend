@@ -13,6 +13,7 @@ type UserEntity struct {
 	Name      string    `json:"name" db:"name" valid:"required"`
 	Lastname  string    `json:"lastname" db:"lastname" valid:"required"`
 	Email     string    `json:"email" db:"email" valid:"required"`
+	Password  string    `json:"password" db:"password" valid:"required"`
 	IsBlock   int       `json:"is_block" db:"is_block" valid:"-"`
 	IsDelete  int       `json:"is_delete" db:"is_delete" valid:"-"`
 	UserId    string    `json:"user_id" db:"user_id" valid:"required"`
@@ -20,13 +21,14 @@ type UserEntity struct {
 	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
 }
 
-func NewUserEntity(id string, dni string, name string, lastname string, email string, isBlock int, isDelete int, userId string) *UserEntity {
+func NewUserEntity(id string, dni string, name string, lastname string, email string, password string, isBlock int, isDelete int, userId string) *UserEntity {
 	return &UserEntity{
 		ID:       id,
 		Dni:      dni,
 		Name:     name,
 		Lastname: lastname,
 		Email:    email,
+		Password: password,
 		IsBlock:  isBlock,
 		IsDelete: isDelete,
 		UserId:   userId,

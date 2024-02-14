@@ -1,9 +1,8 @@
-package roles
+package navigation
 
 import (
 	"database/sql"
 	"fmt"
-	"time"
 
 	"backend-comee/internal/models"
 	"github.com/jmoiron/sqlx"
@@ -16,7 +15,7 @@ type sqlserver struct {
 	TxID string
 }
 
-func newRolesSqlServerRepository(db *sqlx.DB, user *models.User, txID string) *sqlserver {
+func newNavigationSqlServerRepository(db *sqlx.DB, user *models.User, txID string) *sqlserver {
 	return &sqlserver{
 		DB:   db,
 		user: user,
@@ -25,11 +24,11 @@ func newRolesSqlServerRepository(db *sqlx.DB, user *models.User, txID string) *s
 }
 
 // Create registra en la BD
-func (s *sqlserver) create(m *Roles) error {
+func (s *sqlserver) create(m *Navigation) error {
 	date := time.Now()
 	m.UpdatedAt = date
 	m.CreatedAt = date
-	const sqlInsert = `INSERT INTO auth.roles (id ,name, user_id, created_at, updated_at) VALUES (:id ,:name, :user_id:created_at, :updated_at) `
+	const sqlInsert = `INSERT INTO cfg.navigation (id ,name, description, user_id, created_at, updated_at) VALUES (:id ,:name, :description, :user_id:created_at, :updated_at) `
 	rs, err := s.DB.NamedExec(sqlInsert, &m)
 	if err != nil {
 		return err
@@ -41,10 +40,10 @@ func (s *sqlserver) create(m *Roles) error {
 }
 
 // Update actualiza un registro en la BD
-func (s *sqlserver) update(m *Roles) error {
+func (s *sqlserver) update(m *Navigation) error {
 	date := time.Now()
 	m.UpdatedAt = date
-	const sqlUpdate = `UPDATE auth.roles SET name = :name, user_id = :user_id, updated_at = :updated_at WHERE id = :id `
+	const sqlUpdate = `UPDATE cfg.navigation SET name = :name, description = :description, user_id = :user_id, updated_at = :updated_at WHERE id = :id `
 	rs, err := s.DB.NamedExec(sqlUpdate, &m)
 	if err != nil {
 		return err
@@ -57,8 +56,8 @@ func (s *sqlserver) update(m *Roles) error {
 
 // Delete elimina un registro de la BD
 func (s *sqlserver) delete(id string) error {
-	const sqlDelete = `DELETE FROM auth.roles WHERE id = :id `
-	m := Roles{ID: id}
+	const sqlDelete = `DELETE FROM cfg.navigation WHERE id = :id `
+	m := Navigation{ID: id}
 	rs, err := s.DB.NamedExec(sqlDelete, &m)
 	if err != nil {
 		return err
@@ -70,9 +69,9 @@ func (s *sqlserver) delete(id string) error {
 }
 
 // GetByID consulta un registro por su ID
-func (s *sqlserver) getByID(id string) (*Roles, error) {
-	const sqlGetByID = `SELECT convert(nvarchar(50), id) id , name, user_id, created_at, updated_at FROM auth.roles  WITH (NOLOCK)  WHERE id = @id `
-	mdl := Roles{}
+func (s *sqlserver) getByID(id string) (*Navigation, error) {
+	const sqlGetByID = `SELECT convert(nvarchar(50), id) id , name, description, user_id, created_at, updated_at FROM cfg.navigation  WITH (NOLOCK)  WHERE id = @id `
+	mdl := Navigation{}
 	err := s.DB.Get(&mdl, sqlGetByID, sql.Named("id", id))
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -84,9 +83,9 @@ func (s *sqlserver) getByID(id string) (*Roles, error) {
 }
 
 // GetAll consulta todos los registros de la BD
-func (s *sqlserver) getAll() ([]*Roles, error) {
-	var ms []*Roles
-	const sqlGetAll = `SELECT convert(nvarchar(50), id) id , name, user_id, created_at, updated_at FROM auth.roles  WITH (NOLOCK) `
+func (s *sqlserver) getAll() ([]*Navigation, error) {
+	var ms []*Navigation
+	const sqlGetAll = `SELECT convert(nvarchar(50), id) id , name, description, user_id, created_at, updated_at FROM cfg.navigation  WITH (NOLOCK) `
 
 	err := s.DB.Select(&ms, sqlGetAll)
 	if err != nil {
