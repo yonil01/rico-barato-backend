@@ -19,6 +19,8 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
+	"log"
+	"time"
 )
 
 // @title API E11MTI.
@@ -41,6 +43,21 @@ func routes(db *sqlx.DB, loggerHttp bool, allowedOrigins string) *fiber.App {
 		URL:         "swagger/doc.json",
 		DeepLinking: false,
 	}))
+
+	app.Use(func(c *fiber.Ctx) error {
+		// Loguear la petición
+		log.Printf("Petición recibida: %s %s %s", time.Now().Format(time.RFC3339), c.Method(), c.Path())
+
+		// Procesar la petición
+		err := c.Next()
+
+		// Loguear cualquier error que ocurra
+		if err != nil {
+			log.Printf("Error en la petición: %v", err)
+		}
+
+		return err
+	})
 
 	app.Use(recover.New())
 	app.Use(prometheus.Middleware)
