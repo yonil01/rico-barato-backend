@@ -14,12 +14,12 @@ const (
 )
 
 type ServicesFoodRepository interface {
-	create(m *Food) error
-	update(m *Food) error
+	create(m *models.Food) error
+	update(m *models.Food) error
 	delete(id int) error
-	getByID(id int) (*Food, error)
-	getAll() ([]*Food, error)
-	getFoodsByEntityId(entityId int) ([]*Food, error)
+	getByID(id int) (*models.Food, error)
+	getAll() ([]*models.Food, error)
+	getFoodsByEntityId(entityId int) ([]*models.Food, error)
 }
 
 func FactoryStorage(db *sqlx.DB, user *models.User, txID string) ServicesFoodRepository {

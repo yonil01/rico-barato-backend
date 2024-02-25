@@ -1,8 +1,14 @@
 package food
 
 import (
-	"backend-comee/pkg/entity/food"
+	"backend-comee/internal/models"
 )
+
+type Coordinate struct {
+	Long   string `json:"long"`
+	Lat    string `json:"lat"`
+	Amount int    `json:"amount"`
+}
 
 type RequestFood struct {
 	EntityId    int    `json:"entity_id"`
@@ -12,17 +18,17 @@ type RequestFood struct {
 }
 
 type ResponseAllFood struct {
-	Error bool         `json:"error"`
-	Data  []*food.Food `json:"data"`
-	Code  int          `json:"code"`
-	Type  string       `json:"type"`
-	Msg   string       `json:"msg"`
+	Error bool           `json:"error"`
+	Data  []*models.Food `json:"data"`
+	Code  int            `json:"code"`
+	Type  string         `json:"type"`
+	Msg   string         `json:"msg"`
 }
 
 type ResponseFood struct {
-	Error bool       `json:"error"`
-	Data  *food.Food `json:"data"`
-	Code  int        `json:"code"`
-	Type  string     `json:"type"`
-	Msg   string     `json:"msg"`
+	Error bool         `json:"error"`
+	Data  *models.Food `json:"data"`
+	Code  int          `json:"code"`
+	Type  string       `json:"type"`
+	Msg   string       `json:"msg"`
 }

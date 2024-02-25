@@ -25,7 +25,7 @@ func newFoodPsqlRepository(db *sqlx.DB, user *models.User, txID string) *psql {
 }
 
 // Create registra en la BD
-func (s *psql) create(m *Food) error {
+func (s *psql) create(m *models.Food) error {
 
 	const psqlInsert = `INSERT INTO entity.food (entity_id, name, description, price, status, is_block, is_delete, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, created_at, updated_at`
 	stmt, err := s.DB.Prepare(psqlInsert)
@@ -51,7 +51,7 @@ func (s *psql) create(m *Food) error {
 }
 
 // Update actualiza un registro en la BD
-func (s *psql) update(m *Food) error {
+func (s *psql) update(m *models.Food) error {
 	date := time.Now()
 	m.UpdatedAt = date
 	const psqlUpdate = `UPDATE entity.food SET entity_id = :entity_id, name = :name, description = :description, price = :price, status = :status, is_block = :is_block, is_delete = :is_delete, user_id = :user_id, updated_at = :updated_at WHERE id = :id `
@@ -68,7 +68,7 @@ func (s *psql) update(m *Food) error {
 // Delete elimina un registro de la BD
 func (s *psql) delete(id int) error {
 	const psqlDelete = `DELETE FROM entity.food WHERE id = :id `
-	m := Food{ID: id}
+	m := models.Food{ID: id}
 	rs, err := s.DB.NamedExec(psqlDelete, &m)
 	if err != nil {
 		return err
@@ -80,9 +80,9 @@ func (s *psql) delete(id int) error {
 }
 
 // GetByID consulta un registro por su ID
-func (s *psql) getByID(id int) (*Food, error) {
+func (s *psql) getByID(id int) (*models.Food, error) {
 	const psqlGetByID = `SELECT id , entity_id, name, description, price, status, is_block, is_delete, user_id, created_at, updated_at FROM entity.food WHERE id = $1 `
-	mdl := Food{}
+	mdl := models.Food{}
 	err := s.DB.Get(&mdl, psqlGetByID, id)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -94,8 +94,8 @@ func (s *psql) getByID(id int) (*Food, error) {
 }
 
 // GetAll consulta todos los registros de la BD
-func (s *psql) getAll() ([]*Food, error) {
-	var ms []*Food
+func (s *psql) getAll() ([]*models.Food, error) {
+	var ms []*models.Food
 	const psqlGetAll = ` SELECT id , entity_id, name, description, price, status, is_block, is_delete, user_id, created_at, updated_at FROM entity.food `
 
 	err := s.DB.Select(&ms, psqlGetAll)
@@ -108,9 +108,9 @@ func (s *psql) getAll() ([]*Food, error) {
 	return ms, nil
 }
 
-func (s *psql) getFoodsByEntityId(entityId int) ([]*Food, error) {
+func (s *psql) getFoodsByEntityId(entityId int) ([]*models.Food, error) {
 	const psqlGetByID = `SELECT id , entity_id, name, description, price, status, is_block, is_delete, user_id, created_at, updated_at FROM entity.food WHERE entity_id = $1 `
-	var ms []*Food
+	var ms []*models.Food
 	err := s.DB.Select(&ms, psqlGetByID, entityId)
 	if err != nil {
 		if err == sql.ErrNoRows {

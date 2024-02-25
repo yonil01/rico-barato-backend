@@ -14,11 +14,12 @@ const (
 )
 
 type ServicesInformationEntityRepository interface {
-	create(m *InformationEntity) error
-	update(m *InformationEntity) error
+	create(m *models.Entity) error
+	update(m *models.Entity) error
 	delete(id int) error
-	getByID(id int) (*InformationEntity, error)
-	getAll() ([]*InformationEntity, error)
+	getByID(id int) (*models.Entity, error)
+	getAll() ([]*models.Entity, error)
+	getEntityByCoordinate(locationX string, locationY string, amount int) ([]*models.Entity, error)
 }
 
 func FactoryStorage(db *sqlx.DB, user *models.User, txID string) ServicesInformationEntityRepository {

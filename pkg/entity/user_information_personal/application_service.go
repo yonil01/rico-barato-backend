@@ -13,6 +13,7 @@ type PortsServerUserInformationPersonal interface {
 	DeleteUserInformationPersonal(id int) (int, error)
 	GetUserInformationPersonalByID(id int) (*UserInformationPersonal, int, error)
 	GetAllUserInformationPersonal() ([]*UserInformationPersonal, error)
+	GetUserInformationPersonalByUserId(userId string) (*UserInformationPersonal, error)
 }
 
 type service struct {
@@ -89,4 +90,8 @@ func (s *service) GetUserInformationPersonalByID(id int) (*UserInformationPerson
 
 func (s *service) GetAllUserInformationPersonal() ([]*UserInformationPersonal, error) {
 	return s.repository.getAll()
+}
+
+func (s *service) GetUserInformationPersonalByUserId(userId string) (*UserInformationPersonal, error) {
+	return s.repository.getUserInformationPersonalByUserId(userId)
 }

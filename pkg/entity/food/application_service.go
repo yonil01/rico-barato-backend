@@ -8,12 +8,12 @@ import (
 )
 
 type PortsServerFood interface {
-	CreateFood(entityId int, name string, description string, price string, status int, isBlock int, isDelete int, userId string) (*Food, int, error)
-	UpdateFood(id int, entityId int, name string, description string, price string, status int, isBlock int, isDelete int, userId string) (*Food, int, error)
+	CreateFood(entityId int, name string, description string, price string, status int, isBlock int, isDelete int, userId string) (*models.Food, int, error)
+	UpdateFood(id int, entityId int, name string, description string, price string, status int, isBlock int, isDelete int, userId string) (*models.Food, int, error)
 	DeleteFood(id int) (int, error)
-	GetFoodByID(id int) (*Food, int, error)
-	GetAllFood() ([]*Food, error)
-	GetFoodsByEntityId(entityId int) ([]*Food, error)
+	GetFoodByID(id int) (*models.Food, int, error)
+	GetAllFood() ([]*models.Food, error)
+	GetFoodsByEntityId(entityId int) ([]*models.Food, error)
 }
 
 type service struct {
@@ -26,9 +26,9 @@ func NewFoodService(repository ServicesFoodRepository, user *models.User, TxID s
 	return &service{repository: repository, user: user, txID: TxID}
 }
 
-func (s *service) CreateFood(entityId int, name string, description string, price string, status int, isBlock int, isDelete int, userId string) (*Food, int, error) {
+func (s *service) CreateFood(entityId int, name string, description string, price string, status int, isBlock int, isDelete int, userId string) (*models.Food, int, error) {
 	m := NewCreateFood(entityId, name, description, price, status, isBlock, isDelete, userId)
-	if valid, err := m.valid(); !valid {
+	if valid, err := m.Valid(); !valid {
 		logger.Error.Println(s.txID, " - don't meet validations:", err)
 		return m, 15, err
 	}
@@ -42,13 +42,13 @@ func (s *service) CreateFood(entityId int, name string, description string, pric
 	return m, 29, nil
 }
 
-func (s *service) UpdateFood(id int, entityId int, name string, description string, price string, status int, isBlock int, isDelete int, userId string) (*Food, int, error) {
+func (s *service) UpdateFood(id int, entityId int, name string, description string, price string, status int, isBlock int, isDelete int, userId string) (*models.Food, int, error) {
 	m := NewFood(id, entityId, name, description, price, status, isBlock, isDelete, userId)
 	if id == 0 {
 		logger.Error.Println(s.txID, " - don't meet validations:", fmt.Errorf("id is required"))
 		return m, 15, fmt.Errorf("id is required")
 	}
-	if valid, err := m.valid(); !valid {
+	if valid, err := m.Valid(); !valid {
 		logger.Error.Println(s.txID, " - don't meet validations:", err)
 		return m, 15, err
 	}
@@ -75,7 +75,7 @@ func (s *service) DeleteFood(id int) (int, error) {
 	return 28, nil
 }
 
-func (s *service) GetFoodByID(id int) (*Food, int, error) {
+func (s *service) GetFoodByID(id int) (*models.Food, int, error) {
 	if id == 0 {
 		logger.Error.Println(s.txID, " - don't meet validations:", fmt.Errorf("id is required"))
 		return nil, 15, fmt.Errorf("id is required")
@@ -88,10 +88,10 @@ func (s *service) GetFoodByID(id int) (*Food, int, error) {
 	return m, 29, nil
 }
 
-func (s *service) GetAllFood() ([]*Food, error) {
+func (s *service) GetAllFood() ([]*models.Food, error) {
 	return s.repository.getAll()
 }
 
-func (s *service) GetFoodsByEntityId(entityId int) ([]*Food, error) {
+func (s *service) GetFoodsByEntityId(entityId int) ([]*models.Food, error) {
 	return s.repository.getFoodsByEntityId(entityId)
 }

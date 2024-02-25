@@ -1,7 +1,7 @@
 package files
 
 import (
-	"backend-comee/pkg/doc/files"
+	"backend-comee/internal/models"
 )
 
 type RequestFiles struct {
@@ -12,11 +12,11 @@ type RequestFiles struct {
 }
 
 type ResponseAllFiles struct {
-	Error bool           `json:"error"`
-	Data  []*files.Files `json:"data"`
-	Code  int            `json:"code"`
-	Type  string         `json:"type"`
-	Msg   string         `json:"msg"`
+	Error bool            `json:"error"`
+	Data  []*models.Files `json:"data"`
+	Code  int             `json:"code"`
+	Type  string          `json:"type"`
+	Msg   string          `json:"msg"`
 }
 
 type ResponseFiles struct {

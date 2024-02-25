@@ -14,12 +14,12 @@ const (
 )
 
 type ServicesFilesRepository interface {
-	create(m *Files) error
-	update(m *Files) error
+	create(m *models.Files) error
+	update(m *models.Files) error
 	delete(id int) error
-	getByID(id int) (*Files, error)
-	getAll() ([]*Files, error)
-	getFilesByEntityId(entityId int, typeEntity int) ([]*Files, error)
+	getByID(id int) (*models.Files, error)
+	getAll() ([]*models.Files, error)
+	getFilesByEntityId(entityId int, typeEntity int) ([]*models.Files, error)
 }
 
 func FactoryStorage(db *sqlx.DB, user *models.User, txID string) ServicesFilesRepository {

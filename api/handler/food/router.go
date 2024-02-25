@@ -12,5 +12,6 @@ func RouterFood(app *fiber.App, db *sqlx.DB, txID string) {
 	getWork := v1.Group("/food")
 	getWork.Get("", h.GetFoods)
 	getWork.Get("entity-id/:id/:type", h.GetFoodsByEntityId)
+	getWork.Post("entity/coordinate", h.GetFoodsByEntityWithCoordinate)
 	getWork.Post("create", h.CreateFood)
 }

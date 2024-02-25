@@ -25,7 +25,7 @@ func newInformationEntitySqlServerRepository(db *sqlx.DB, user *models.User, txI
 }
 
 // Create registra en la BD
-func (s *sqlserver) create(m *InformationEntity) error {
+func (s *sqlserver) create(m *models.Entity) error {
 	var id int
 	date := time.Now()
 	m.UpdatedAt = date
@@ -58,7 +58,7 @@ func (s *sqlserver) create(m *InformationEntity) error {
 }
 
 // Update actualiza un registro en la BD
-func (s *sqlserver) update(m *InformationEntity) error {
+func (s *sqlserver) update(m *models.Entity) error {
 	date := time.Now()
 	m.UpdatedAt = date
 	const sqlUpdate = `UPDATE entity.information_entity SET user_entity_id = :user_entity_id, name = :name, description = :description, telephone = :telephone, mobile = :mobile, location_x = :location_x, location_y = :location_y, is_block = :is_block, is_delete = :is_delete, user_id = :user_id, updated_at = :updated_at WHERE id = :id `
@@ -75,7 +75,7 @@ func (s *sqlserver) update(m *InformationEntity) error {
 // Delete elimina un registro de la BD
 func (s *sqlserver) delete(id int) error {
 	const sqlDelete = `DELETE FROM entity.information_entity WHERE id = :id `
-	m := InformationEntity{ID: id}
+	m := models.Entity{ID: id}
 	rs, err := s.DB.NamedExec(sqlDelete, &m)
 	if err != nil {
 		return err
@@ -87,9 +87,9 @@ func (s *sqlserver) delete(id int) error {
 }
 
 // GetByID consulta un registro por su ID
-func (s *sqlserver) getByID(id int) (*InformationEntity, error) {
+func (s *sqlserver) getByID(id int) (*models.Entity, error) {
 	const sqlGetByID = `SELECT convert(nvarchar(50), id) id , user_entity_id, name, description, telephone, mobile, location_x, location_y, is_block, is_delete, user_id, created_at, updated_at FROM entity.information_entity  WITH (NOLOCK)  WHERE id = @id `
-	mdl := InformationEntity{}
+	mdl := models.Entity{}
 	err := s.DB.Get(&mdl, sqlGetByID, sql.Named("id", id))
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -101,8 +101,8 @@ func (s *sqlserver) getByID(id int) (*InformationEntity, error) {
 }
 
 // GetAll consulta todos los registros de la BD
-func (s *sqlserver) getAll() ([]*InformationEntity, error) {
-	var ms []*InformationEntity
+func (s *sqlserver) getAll() ([]*models.Entity, error) {
+	var ms []*models.Entity
 	const sqlGetAll = `SELECT convert(nvarchar(50), id) id , user_entity_id, name, description, telephone, mobile, location_x, location_y, is_block, is_delete, user_id, created_at, updated_at FROM entity.information_entity  WITH (NOLOCK) `
 
 	err := s.DB.Select(&ms, sqlGetAll)
@@ -113,4 +113,25 @@ func (s *sqlserver) getAll() ([]*InformationEntity, error) {
 		return ms, err
 	}
 	return ms, nil
+}
+
+func (s *sqlserver) getEntityByCoordinate(locationX string, locationY string, amount int) ([]*models.Entity, error) {
+	const psqlGetByCoordinate = `
+    SELECT id, user_entity_id, name, description, telephone, mobile, location_x, location_y, 
+           is_block, is_delete, user_id, created_at, updated_at
+    FROM entity.information_entity
+    WHERE NOT is_block AND NOT is_delete
+    ORDER BY (location_x::float - $1::float)^2 + (location_y::float - $2::float)^2
+    LIMIT $3;`
+
+	var mdl []*models.Entity
+
+	err := s.DB.Select(&mdl, psqlGetByCoordinate, locationX, locationY, amount)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return mdl, nil
 }

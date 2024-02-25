@@ -107,3 +107,16 @@ func (s *sqlserver) getAll() ([]*UserInformationPersonal, error) {
 	}
 	return ms, nil
 }
+
+func (s *sqlserver) getUserInformationPersonalByUserId(userId string) (*UserInformationPersonal, error) {
+	const psqlGetByID = `SELECT id , user_id, gender, age, created_at, updated_at FROM entity.user_information_personal WHERE user_id = $1 `
+	mdl := UserInformationPersonal{}
+	err := s.DB.Get(&mdl, psqlGetByID, userId)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return &mdl, err
+	}
+	return &mdl, nil
+}

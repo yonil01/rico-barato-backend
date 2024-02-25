@@ -25,7 +25,7 @@ func newFilesPsqlRepository(db *sqlx.DB, user *models.User, txID string) *psql {
 }
 
 // Create registra en la BD
-func (s *psql) create(m *Files) error {
+func (s *psql) create(m *models.Files) error {
 
 	const psqlInsert = `INSERT INTO doc.files (entity_id, path, type_document, type_entity, user_id, is_delete) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, created_at, updated_at`
 	stmt, err := s.DB.Prepare(psqlInsert)
@@ -49,7 +49,7 @@ func (s *psql) create(m *Files) error {
 }
 
 // Update actualiza un registro en la BD
-func (s *psql) update(m *Files) error {
+func (s *psql) update(m *models.Files) error {
 	date := time.Now()
 	m.UpdatedAt = date
 	const psqlUpdate = `UPDATE doc.files SET entity_id = :entity_id, path = :path, type_document = :type_document, type_entity = :type_entity, user_id = :user_id, is_delete = :is_delete, updated_at = :updated_at WHERE id = :id `
@@ -66,7 +66,7 @@ func (s *psql) update(m *Files) error {
 // Delete elimina un registro de la BD
 func (s *psql) delete(id int) error {
 	const psqlDelete = `DELETE FROM doc.files WHERE id = :id `
-	m := Files{ID: id}
+	m := models.Files{ID: id}
 	rs, err := s.DB.NamedExec(psqlDelete, &m)
 	if err != nil {
 		return err
@@ -78,9 +78,9 @@ func (s *psql) delete(id int) error {
 }
 
 // GetByID consulta un registro por su ID
-func (s *psql) getByID(id int) (*Files, error) {
+func (s *psql) getByID(id int) (*models.Files, error) {
 	const psqlGetByID = `SELECT id , entity_id, path, type_document, type_entity, user_id, is_delete, created_at, updated_at FROM doc.files WHERE id = $1 `
-	mdl := Files{}
+	mdl := models.Files{}
 	err := s.DB.Get(&mdl, psqlGetByID, id)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -92,8 +92,8 @@ func (s *psql) getByID(id int) (*Files, error) {
 }
 
 // GetAll consulta todos los registros de la BD
-func (s *psql) getAll() ([]*Files, error) {
-	var ms []*Files
+func (s *psql) getAll() ([]*models.Files, error) {
+	var ms []*models.Files
 	const psqlGetAll = ` SELECT id , entity_id, path, type_document, type_entity, user_id, is_delete, created_at, updated_at FROM doc.files `
 
 	err := s.DB.Select(&ms, psqlGetAll)
@@ -106,9 +106,9 @@ func (s *psql) getAll() ([]*Files, error) {
 	return ms, nil
 }
 
-func (s *psql) getFilesByEntityId(entityId int, typeEntity int) ([]*Files, error) {
+func (s *psql) getFilesByEntityId(entityId int, typeEntity int) ([]*models.Files, error) {
 	const psqlGetByID = `SELECT id , entity_id, path, type_document, type_entity, user_id, is_delete, created_at, updated_at FROM doc.files WHERE entity_id = $1 and type_entity = $2 `
-	var ms []*Files
+	var ms []*models.Files
 	err := s.DB.Select(&ms, psqlGetByID, entityId, typeEntity)
 	if err != nil {
 		if err == sql.ErrNoRows {

@@ -1,7 +1,7 @@
 package entity
 
 import (
-	"backend-comee/pkg/entity/information_entity"
+	"backend-comee/internal/models"
 )
 
 type RequestEntity struct {
@@ -15,17 +15,17 @@ type RequestEntity struct {
 }
 
 type ResponseAllInfoEntity struct {
-	Error bool                                    `json:"error"`
-	Data  []*information_entity.InformationEntity `json:"data"`
-	Code  int                                     `json:"code"`
-	Type  string                                  `json:"type"`
-	Msg   string                                  `json:"msg"`
+	Error bool             `json:"error"`
+	Data  []*models.Entity `json:"data"`
+	Code  int              `json:"code"`
+	Type  string           `json:"type"`
+	Msg   string           `json:"msg"`
 }
 
 type ResponseInfoEntity struct {
-	Error bool                                  `json:"error"`
-	Data  *information_entity.InformationEntity `json:"data"`
-	Code  int                                   `json:"code"`
-	Type  string                                `json:"type"`
-	Msg   string                                `json:"msg"`
+	Error bool           `json:"error"`
+	Data  *models.Entity `json:"data"`
+	Code  int            `json:"code"`
+	Type  string         `json:"type"`
+	Msg   string         `json:"msg"`
 }

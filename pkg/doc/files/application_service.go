@@ -8,12 +8,12 @@ import (
 )
 
 type PortsServerFiles interface {
-	CreateFiles(entityId int, path string, typeDocument string, typeEntity int, userId string, isDelete int) (*Files, int, error)
-	UpdateFiles(id int, entityId int, path string, typeDocument string, typeEntity int, userId string, isDelete int) (*Files, int, error)
+	CreateFiles(entityId int, path string, typeDocument string, typeEntity int, userId string, isDelete int) (*models.Files, int, error)
+	UpdateFiles(id int, entityId int, path string, typeDocument string, typeEntity int, userId string, isDelete int) (*models.Files, int, error)
 	DeleteFiles(id int) (int, error)
-	GetFilesByID(id int) (*Files, int, error)
-	GetAllFiles() ([]*Files, error)
-	GetFilesByEntityId(entityId int, typeEntity int) ([]*Files, error)
+	GetFilesByID(id int) (*models.Files, int, error)
+	GetAllFiles() ([]*models.Files, error)
+	GetFilesByEntityId(entityId int, typeEntity int) ([]*models.Files, error)
 }
 
 type service struct {
@@ -26,9 +26,9 @@ func NewFilesService(repository ServicesFilesRepository, user *models.User, TxID
 	return &service{repository: repository, user: user, txID: TxID}
 }
 
-func (s *service) CreateFiles(entityId int, path string, typeDocument string, typeEntity int, userId string, isDelete int) (*Files, int, error) {
+func (s *service) CreateFiles(entityId int, path string, typeDocument string, typeEntity int, userId string, isDelete int) (*models.Files, int, error) {
 	m := NewCreateFiles(entityId, path, typeDocument, typeEntity, userId, isDelete)
-	if valid, err := m.valid(); !valid {
+	if valid, err := m.Valid(); !valid {
 		logger.Error.Println(s.txID, " - don't meet validations:", err)
 		return m, 15, err
 	}
@@ -42,13 +42,13 @@ func (s *service) CreateFiles(entityId int, path string, typeDocument string, ty
 	return m, 29, nil
 }
 
-func (s *service) UpdateFiles(id int, entityId int, path string, typeDocument string, typeEntity int, userId string, isDelete int) (*Files, int, error) {
+func (s *service) UpdateFiles(id int, entityId int, path string, typeDocument string, typeEntity int, userId string, isDelete int) (*models.Files, int, error) {
 	m := NewFiles(id, entityId, path, typeDocument, typeEntity, userId, isDelete)
 	if id == 0 {
 		logger.Error.Println(s.txID, " - don't meet validations:", fmt.Errorf("id is required"))
 		return m, 15, fmt.Errorf("id is required")
 	}
-	if valid, err := m.valid(); !valid {
+	if valid, err := m.Valid(); !valid {
 		logger.Error.Println(s.txID, " - don't meet validations:", err)
 		return m, 15, err
 	}
@@ -75,7 +75,7 @@ func (s *service) DeleteFiles(id int) (int, error) {
 	return 28, nil
 }
 
-func (s *service) GetFilesByID(id int) (*Files, int, error) {
+func (s *service) GetFilesByID(id int) (*models.Files, int, error) {
 	if id == 0 {
 		logger.Error.Println(s.txID, " - don't meet validations:", fmt.Errorf("id is required"))
 		return nil, 15, fmt.Errorf("id is required")
@@ -88,10 +88,10 @@ func (s *service) GetFilesByID(id int) (*Files, int, error) {
 	return m, 29, nil
 }
 
-func (s *service) GetAllFiles() ([]*Files, error) {
+func (s *service) GetAllFiles() ([]*models.Files, error) {
 	return s.repository.getAll()
 }
 
-func (s *service) GetFilesByEntityId(entityId int, typeEntity int) ([]*Files, error) {
+func (s *service) GetFilesByEntityId(entityId int, typeEntity int) ([]*models.Files, error) {
 	return s.repository.getFilesByEntityId(entityId, typeEntity)
 }

@@ -1,6 +1,7 @@
 package api
 
 import (
+	"backend-comee/api/handler/comments"
 	InfoBasicEntity "backend-comee/api/handler/entity"
 	"backend-comee/api/handler/files"
 	"backend-comee/api/handler/food"
@@ -81,5 +82,6 @@ func routes(db *sqlx.DB, loggerHttp bool, allowedOrigins string) *fiber.App {
 	user_information_personal.RouterUserInformationPersonal(app, db, TxID)
 	files.RouterFiles(app, db, TxID)
 	food.RouterFood(app, db, TxID)
+	comments.RouterComments(app, db, TxID)
 	return app
 }

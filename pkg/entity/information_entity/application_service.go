@@ -8,11 +8,12 @@ import (
 )
 
 type PortsServerInformationEntity interface {
-	CreateInformationEntity(userEntityId string, name string, description string, telephone string, mobile string, locationX string, locationY string, isBlock int, isDelete int, userId string) (*InformationEntity, int, error)
-	UpdateInformationEntity(id int, userEntityId string, name string, description string, telephone string, mobile string, locationX string, locationY string, isBlock int, isDelete int, userId string) (*InformationEntity, int, error)
+	CreateInformationEntity(userEntityId string, name string, description string, telephone string, mobile string, locationX string, locationY string, isBlock int, isDelete int, userId string) (*models.Entity, int, error)
+	UpdateInformationEntity(id int, userEntityId string, name string, description string, telephone string, mobile string, locationX string, locationY string, isBlock int, isDelete int, userId string) (*models.Entity, int, error)
 	DeleteInformationEntity(id int) (int, error)
-	GetInformationEntityByID(id int) (*InformationEntity, int, error)
-	GetAllInformationEntity() ([]*InformationEntity, error)
+	GetInformationEntityByID(id int) (*models.Entity, int, error)
+	GetAllInformationEntity() ([]*models.Entity, error)
+	GetEntityByCoordinate(long string, lat string, amount int) ([]*models.Entity, error)
 }
 
 type service struct {
@@ -25,9 +26,9 @@ func NewInformationEntityService(repository ServicesInformationEntityRepository,
 	return &service{repository: repository, user: user, txID: TxID}
 }
 
-func (s *service) CreateInformationEntity(userEntityId string, name string, description string, telephone string, mobile string, locationX string, locationY string, isBlock int, isDelete int, userId string) (*InformationEntity, int, error) {
+func (s *service) CreateInformationEntity(userEntityId string, name string, description string, telephone string, mobile string, locationX string, locationY string, isBlock int, isDelete int, userId string) (*models.Entity, int, error) {
 	m := NewCreateInformationEntity(userEntityId, name, description, telephone, mobile, locationX, locationY, isBlock, isDelete, userId)
-	if valid, err := m.valid(); !valid {
+	if valid, err := m.Valid(); !valid {
 		logger.Error.Println(s.txID, " - don't meet validations:", err)
 		return m, 15, err
 	}
@@ -41,13 +42,13 @@ func (s *service) CreateInformationEntity(userEntityId string, name string, desc
 	return m, 29, nil
 }
 
-func (s *service) UpdateInformationEntity(id int, userEntityId string, name string, description string, telephone string, mobile string, locationX string, locationY string, isBlock int, isDelete int, userId string) (*InformationEntity, int, error) {
+func (s *service) UpdateInformationEntity(id int, userEntityId string, name string, description string, telephone string, mobile string, locationX string, locationY string, isBlock int, isDelete int, userId string) (*models.Entity, int, error) {
 	m := NewInformationEntity(id, userEntityId, name, description, telephone, mobile, locationX, locationY, isBlock, isDelete, userId)
 	if id == 0 {
 		logger.Error.Println(s.txID, " - don't meet validations:", fmt.Errorf("id is required"))
 		return m, 15, fmt.Errorf("id is required")
 	}
-	if valid, err := m.valid(); !valid {
+	if valid, err := m.Valid(); !valid {
 		logger.Error.Println(s.txID, " - don't meet validations:", err)
 		return m, 15, err
 	}
@@ -74,7 +75,7 @@ func (s *service) DeleteInformationEntity(id int) (int, error) {
 	return 28, nil
 }
 
-func (s *service) GetInformationEntityByID(id int) (*InformationEntity, int, error) {
+func (s *service) GetInformationEntityByID(id int) (*models.Entity, int, error) {
 	if id == 0 {
 		logger.Error.Println(s.txID, " - don't meet validations:", fmt.Errorf("id is required"))
 		return nil, 15, fmt.Errorf("id is required")
@@ -87,6 +88,10 @@ func (s *service) GetInformationEntityByID(id int) (*InformationEntity, int, err
 	return m, 29, nil
 }
 
-func (s *service) GetAllInformationEntity() ([]*InformationEntity, error) {
+func (s *service) GetAllInformationEntity() ([]*models.Entity, error) {
 	return s.repository.getAll()
+}
+
+func (s *service) GetEntityByCoordinate(long string, lat string, amount int) ([]*models.Entity, error) {
+	return s.repository.getEntityByCoordinate(long, lat, amount)
 }

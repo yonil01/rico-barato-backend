@@ -25,7 +25,7 @@ func newFoodOrclRepository(db *sqlx.DB, user *models.User, txID string) *orcl {
 }
 
 // Create registra en la BD
-func (s *orcl) create(m *Food) error {
+func (s *orcl) create(m *models.Food) error {
 	const osqlInsert = `INSERT INTO entity.food (entity_id, name, description, price, status, is_block, is_delete, user_id, created_at, updated_at)  VALUES (:entity_id, :name, :description, :price, :status, :is_block, :is_delete, :user_id, sysdate, sysdate) RETURNING id into id, created_at into created_at, updated_at into updated_at `
 	stmt, err := s.DB.Prepare(osqlInsert)
 	if err != nil {
@@ -49,7 +49,7 @@ func (s *orcl) create(m *Food) error {
 }
 
 // Update actualiza un registro en la BD
-func (s *orcl) update(m *Food) error {
+func (s *orcl) update(m *models.Food) error {
 	date := time.Now()
 	m.UpdatedAt = date
 	const osqlUpdate = `UPDATE entity.food SET entity_id = :entity_id, name = :name, description = :description, price = :price, status = :status, is_block = :is_block, is_delete = :is_delete, user_id = :user_id, updated_at = :updated_at WHERE id = :id  `
@@ -66,7 +66,7 @@ func (s *orcl) update(m *Food) error {
 // Delete elimina un registro de la BD
 func (s *orcl) delete(id int) error {
 	const osqlDelete = `DELETE FROM entity.food WHERE id = :id `
-	m := Food{ID: id}
+	m := models.Food{ID: id}
 	rs, err := s.DB.NamedExec(osqlDelete, &m)
 	if err != nil {
 		return err
@@ -78,9 +78,9 @@ func (s *orcl) delete(id int) error {
 }
 
 // GetByID consulta un registro por su ID
-func (s *orcl) getByID(id int) (*Food, error) {
+func (s *orcl) getByID(id int) (*models.Food, error) {
 	const osqlGetByID = `SELECT id , entity_id, name, description, price, status, is_block, is_delete, user_id, created_at, updated_at FROM entity.food WHERE id = :1 `
-	mdl := Food{}
+	mdl := models.Food{}
 	err := s.DB.Get(&mdl, osqlGetByID, id)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -92,8 +92,8 @@ func (s *orcl) getByID(id int) (*Food, error) {
 }
 
 // GetAll consulta todos los registros de la BD
-func (s *orcl) getAll() ([]*Food, error) {
-	var ms []*Food
+func (s *orcl) getAll() ([]*models.Food, error) {
+	var ms []*models.Food
 	const osqlGetAll = ` SELECT id , entity_id, name, description, price, status, is_block, is_delete, user_id, created_at, updated_at FROM entity.food `
 
 	err := s.DB.Select(&ms, osqlGetAll)
@@ -106,9 +106,9 @@ func (s *orcl) getAll() ([]*Food, error) {
 	return ms, nil
 }
 
-func (s *orcl) getFoodsByEntityId(entityId int) ([]*Food, error) {
+func (s *orcl) getFoodsByEntityId(entityId int) ([]*models.Food, error) {
 	const psqlGetByID = `SELECT id , entity_id, name, description, price, status, is_block, is_delete, user_id, created_at, updated_at FROM entity.food WHERE entity_id = $1 `
-	var ms []*Food
+	var ms []*models.Food
 	err := s.DB.Select(&ms, psqlGetByID, entityId)
 	if err != nil {
 		if err == sql.ErrNoRows {

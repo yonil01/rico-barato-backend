@@ -19,6 +19,7 @@ type ServicesUserInformationPersonalRepository interface {
 	delete(id int) error
 	getByID(id int) (*UserInformationPersonal, error)
 	getAll() ([]*UserInformationPersonal, error)
+	getUserInformationPersonalByUserId(userId string) (*UserInformationPersonal, error)
 }
 
 func FactoryStorage(db *sqlx.DB, user *models.User, txID string) ServicesUserInformationPersonalRepository {
