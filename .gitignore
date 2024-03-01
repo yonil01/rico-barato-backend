@@ -51,3 +51,4 @@ certificates/
 /templates/
 .zip
 .rar
+.vercel

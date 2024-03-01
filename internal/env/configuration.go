@@ -3,7 +3,6 @@ package env
 import (
 	"backend-comee/internal/ciphers"
 	"encoding/json"
-	"io/ioutil"
 	"log"
 	"sync"
 )
@@ -64,14 +63,58 @@ func NewConfiguration() *configuration {
 // y lo carga en un objeto de la estructura Configuration
 func fromFile() {
 	once.Do(func() {
-		b, err := ioutil.ReadFile("config.json")
+
+		stringConfig := `{
+			"app":{
+				"service_name": "backend-cff",
+					"port": 6032,
+					"allowed_domains": "*",
+					"path_log": "./log",
+					"log_review_interval":60,
+					"register_log": true,
+					"rsa_private_key": "rsa/app.rsa",
+					"rsa_public_key": "rsa/app.rsa.pub",
+					"logger_http": false,
+					"is_cipher": false,
+					"validate_ip": "U2FsdGVkX19v3BWlEyIr/BvH568E5r+dq/03m9qNZBQ=",
+					"path_directory": "excel",
+					"index_separator": 10
+			},
+			"db": {
+				"engine": "postgres",
+					"server": "roundhouse.proxy.rlwy.net",
+					"port": 38816,
+					"name": "railway",
+					"user": "postgres",
+					"password": "eD5c5G4cE--cFfE43eb6A213aa-CCbbg",
+					"instance": "",
+					"is_secure": false
+			},
+			"smtp" : {
+				"port": 587,
+					"host": "in-v3.mailjet.com",
+					"email": "07366c0397ed0e45ed555e75c48247c3",
+					"password": "2565011db3640655f1c16e9ad2669561"
+			},
+			"external": {
+				"reniec": "https://dniruc.apisperu.com/api/v1/dni/",
+					"credential": "?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InlvbmlsLnJvamFzQGUtY2FwdHVyZS5jbyJ9.Rcu71yck4VAjnNAdlrNpXl-IzfKFicaGv0zpBJstMQQ"
+			}
+		}`
+
+		/*b, err := ioutil.ReadFile("config.json")
 		if err != nil {
 			log.Fatalf("no se pudo leer el archivo de configuración: %s", err.Error())
-		}
+		}*/
 
-		err = json.Unmarshal(b, config)
+		/*err = json.Unmarshal(b, config)
 		if err != nil {
 			log.Fatalf("no se pudo parsear el archivo de configuración: %s", err.Error())
+		}*/
+
+		err := json.Unmarshal([]byte(stringConfig), &config)
+		if err != nil {
+			log.Fatalf("Error al deserializar el JSON: %v", err)
 		}
 
 		if config.DB.Engine == "" {
