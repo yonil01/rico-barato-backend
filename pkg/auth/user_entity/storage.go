@@ -19,6 +19,7 @@ type ServicesUserEntityRepository interface {
 	delete(id string) error
 	getByID(id string) (*UserEntity, error)
 	getAll() ([]*UserEntity, error)
+	login(email string, password string) (*UserEntity, error)
 }
 
 func FactoryStorage(db *sqlx.DB, user *models.User, txID string) ServicesUserEntityRepository {

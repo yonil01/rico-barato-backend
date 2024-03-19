@@ -13,6 +13,11 @@ type RequestUserEntity struct {
 	Password string `json:"password"`
 }
 
+type RequestLogin struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 type ResponseAllInfoBasicPerson struct {
 	Error bool                      `json:"error"`
 	Data  []*user_entity.UserEntity `json:"data"`

@@ -1,0 +1,6 @@
+[build]
+  functions = "functions"
+  publish = "dummy_directory"
+
+[build.environment]
+  GO_VERSION = "1.18"

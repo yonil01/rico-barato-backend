@@ -14,6 +14,7 @@ type PortsServerInformationEntity interface {
 	GetInformationEntityByID(id int) (*models.Entity, int, error)
 	GetAllInformationEntity() ([]*models.Entity, error)
 	GetEntityByCoordinate(long string, lat string, amount int) ([]*models.Entity, error)
+	GetEntityByUser(userId string) ([]*models.Entity, error)
 }
 
 type service struct {
@@ -94,4 +95,13 @@ func (s *service) GetAllInformationEntity() ([]*models.Entity, error) {
 
 func (s *service) GetEntityByCoordinate(long string, lat string, amount int) ([]*models.Entity, error) {
 	return s.repository.getEntityByCoordinate(long, lat, amount)
+}
+
+func (s *service) GetEntityByUser(userId string) ([]*models.Entity, error) {
+	m, err := s.repository.getByUserId(userId)
+	if err != nil {
+		logger.Error.Println(s.txID, " - couldn`t getByID row:", err)
+		return nil, err
+	}
+	return m, nil
 }

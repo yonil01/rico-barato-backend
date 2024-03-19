@@ -20,6 +20,7 @@ type ServicesInformationEntityRepository interface {
 	getByID(id int) (*models.Entity, error)
 	getAll() ([]*models.Entity, error)
 	getEntityByCoordinate(locationX string, locationY string, amount int) ([]*models.Entity, error)
+	getByUserId(id string) ([]*models.Entity, error)
 }
 
 func FactoryStorage(db *sqlx.DB, user *models.User, txID string) ServicesInformationEntityRepository {

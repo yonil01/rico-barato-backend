@@ -128,3 +128,16 @@ func (s *orcl) getEntityByCoordinate(locationX string, locationY string, amount 
 	}
 	return mdl, nil
 }
+
+func (s *orcl) getByUserId(id string) ([]*models.Entity, error) {
+	const psqlGetByID = `SELECT id , user_entity_id, name, description, telephone, mobile, location_x, location_y, is_block, is_delete, user_id, created_at, updated_at FROM entity.information_entity WHERE user_entity_id = $1 `
+	mdl := []*models.Entity{}
+	err := s.DB.Get(&mdl, psqlGetByID, id)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return mdl, err
+	}
+	return mdl, nil
+}

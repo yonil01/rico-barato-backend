@@ -14,6 +14,7 @@ type PortsServerUserEntity interface {
 	DeleteUserEntity(id string) (int, error)
 	GetUserEntityByID(id string) (*UserEntity, int, error)
 	GetAllUserEntity() ([]*UserEntity, error)
+	Login(email string, password string) (*UserEntity, int, error)
 }
 
 type service struct {
@@ -87,4 +88,13 @@ func (s *service) GetUserEntityByID(id string) (*UserEntity, int, error) {
 
 func (s *service) GetAllUserEntity() ([]*UserEntity, error) {
 	return s.repository.getAll()
+}
+
+func (s *service) Login(email string, password string) (*UserEntity, int, error) {
+	m, err := s.repository.login(email, password)
+	if err != nil {
+		logger.Error.Println(s.txID, " - couldn`t login row:", err)
+		return nil, 22, err
+	}
+	return m, 29, nil
 }

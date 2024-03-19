@@ -4,6 +4,7 @@ import (
 	"backend-comee/internal/logger"
 	"backend-comee/internal/models"
 	"backend-comee/internal/msgs"
+	"backend-comee/pkg/doc"
 	"backend-comee/pkg/entity"
 	"github.com/gofiber/fiber/v2"
 	"github.com/jmoiron/sqlx"
@@ -64,6 +65,39 @@ func (h *handlerInfoBasicEntitys) CreateEntity(c *fiber.Ctx) error {
 	}
 
 	res.Data = resData
+	res.Error = false
+
+	return c.Status(http.StatusOK).JSON(res)
+}
+
+func (h *handlerInfoBasicEntitys) GetEntityUser(c *fiber.Ctx) error {
+	msg := msgs.Model{}
+	res := ResponseAllInfoEntity{Error: true}
+	srvEntity := entity.NewServerEntity(h.dB, h.user, h.txID)
+
+	userId := c.Params("id")
+
+	req, err := srvEntity.InformationEntity.GetEntityByUser(userId)
+	if err != nil {
+		logger.Error.Printf("Couldn't insert suffragers: %v", err)
+		res.Code, res.Type, res.Msg = msg.GetByCode(99)
+		return c.Status(http.StatusAccepted).JSON(res)
+	}
+	srvDoc := doc.NewServerEntity(h.dB, h.user, h.txID)
+	var reqFoods []*models.Entity
+
+	for _, obj := range req {
+		reqFile, err := srvDoc.Files.GetFilesByEntityId(obj.ID, 1)
+		if err != nil {
+			logger.Error.Printf("Couldn't insert suffragers: %v", err)
+			res.Code, res.Type, res.Msg = msg.GetByCode(99)
+			return c.Status(http.StatusAccepted).JSON(res)
+		}
+		obj.File = reqFile
+		reqFoods = append(reqFoods, obj)
+	}
+
+	res.Data = reqFoods
 	res.Error = false
 
 	return c.Status(http.StatusOK).JSON(res)

@@ -97,3 +97,16 @@ func (s *orcl) getAll() ([]*UserEntity, error) {
 	}
 	return ms, nil
 }
+
+func (s *orcl) login(email string, password string) (*UserEntity, error) {
+	const psqlGetByID = `SELECT id , dni, name, lastname, email, password, is_block, is_delete, user_id, created_at, updated_at FROM auth.user_entity WHERE email = $1 and password = $2`
+	mdl := UserEntity{}
+	err := s.DB.Get(&mdl, psqlGetByID, email, password)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return &mdl, err
+	}
+	return &mdl, nil
+}
